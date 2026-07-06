@@ -9,6 +9,7 @@ const dummyProducts = [
 ];
 
 export default function Sales() {
+  
   const [cart, setCart] = useState<{ id: number; product: typeof dummyProducts[0]; quantity: number }[]>([]);
   const [selectedProductId, setSelectedProductId] = useState("");
   const [quantity, setQuantity] = useState<number>(1);
