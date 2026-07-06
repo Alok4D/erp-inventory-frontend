@@ -3,10 +3,12 @@ import { Plus, Search, Package2, Loader2, ChevronLeft, ChevronRight } from "luci
 import { useGetProductsQuery, useDeleteProductMutation } from "../../../redux/features/product/productApi";
 import { AddProductModal } from "../components/AddProductModal";
 import { EditProductModal } from "../components/EditProductModal";
+import { DeleteProductModal } from "../components/DeleteProductModal";
 
 export default function Products() {
   const [isAddModalOpen, setIsAddModalOpen] = useState(false);
   const [editingProduct, setEditingProduct] = useState<any>(null);
+  const [productToDelete, setProductToDelete] = useState<string | null>(null);
   
   const [searchTerm, setSearchTerm] = useState("");
   const [debouncedSearch, setDebouncedSearch] = useState("");
@@ -33,18 +35,19 @@ export default function Products() {
   const products = data?.data || [];
   const meta = data?.meta || { totalPage: 1, total: 0 };
 
-  const handleDelete = async (id: string) => {
-    if (window.confirm("Are you sure you want to delete this product?")) {
-      try {
-        await deleteProduct(id).unwrap();
-        // Pagination logic: if we delete the last item on current page, go back a page
-        if (products.length === 1 && page > 1) {
-          setPage(page - 1);
-        }
-      } catch (err) {
-        console.error("Failed to delete:", err);
-        alert("Failed to delete product");
+  const handleDeleteConfirm = async () => {
+    if (!productToDelete) return;
+    
+    try {
+      await deleteProduct(productToDelete).unwrap();
+      // Pagination logic: if we delete the last item on current page, go back a page
+      if (products.length === 1 && page > 1) {
+        setPage(page - 1);
       }
+      setProductToDelete(null);
+    } catch (err) {
+      console.error("Failed to delete:", err);
+      alert("Failed to delete product");
     }
   };
 
@@ -136,7 +139,7 @@ export default function Products() {
                           Edit
                         </button>
                         <button 
-                          onClick={() => handleDelete(product._id)}
+                          onClick={() => setProductToDelete(product._id)}
                           disabled={isDeleting}
                           className="text-red-600 hover:underline text-sm font-medium disabled:opacity-50"
                         >
@@ -183,6 +186,14 @@ export default function Products() {
         <EditProductModal 
           product={editingProduct} 
           onClose={() => setEditingProduct(null)} 
+        />
+      )}
+
+      {productToDelete && (
+        <DeleteProductModal 
+          isLoading={isDeleting}
+          onClose={() => setProductToDelete(null)}
+          onConfirm={handleDeleteConfirm}
         />
       )}
     </div>
