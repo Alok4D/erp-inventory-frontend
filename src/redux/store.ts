@@ -1,8 +1,22 @@
 import { configureStore } from '@reduxjs/toolkit';
 import { persistStore, persistReducer, FLUSH, REHYDRATE, PAUSE, PERSIST, PURGE, REGISTER } from 'redux-persist';
-import storage from 'redux-persist/lib/storage';
 import { baseApi } from './api/baseApi';
 import authReducer from './features/auth/authSlice';
+
+// A simple local storage adapter that works nicely with Vite/ES Modules
+const storage = {
+  getItem: (key: string) => {
+    return Promise.resolve(window.localStorage.getItem(key));
+  },
+  setItem: (key: string, value: string) => {
+    window.localStorage.setItem(key, value);
+    return Promise.resolve();
+  },
+  removeItem: (key: string) => {
+    window.localStorage.removeItem(key);
+    return Promise.resolve();
+  },
+};
 
 const persistConfig = {
   key: 'auth',
