@@ -2,6 +2,7 @@ import { useState } from "react";
 import { Plus, Trash2, ShoppingCart, Loader2 } from "lucide-react";
 import { useGetProductsQuery } from "../../../redux/features/product/productApi";
 import { useCreateSaleMutation } from "../../../redux/features/sale/saleApi";
+import { Skeleton } from "../../../components/ui/skeleton";
 
 export default function Sales() {
   const { data: productsData, isLoading: isLoadingProducts } = useGetProductsQuery(undefined);
@@ -97,42 +98,56 @@ export default function Sales() {
             Add Products to Sale
           </h2>
           
-          <div className="flex flex-col md:flex-row gap-4 items-end">
-            <div className="flex-1 w-full">
-              <label className="block text-sm font-medium text-gray-700 mb-1.5">Select Product</label>
-              <select 
-                className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-1 focus:ring-gray-900 focus:border-gray-900 transition-colors bg-white"
-                value={selectedProductId}
-                onChange={(e) => setSelectedProductId(e.target.value)}
-                disabled={isLoadingProducts}
+          {isLoadingProducts ? (
+            <div className="flex flex-col md:flex-row gap-4 items-end">
+              <div className="flex-1 w-full space-y-1.5">
+                <Skeleton className="h-4 w-24" />
+                <Skeleton className="h-10 w-full" />
+              </div>
+              <div className="w-full md:w-32 space-y-1.5">
+                <Skeleton className="h-4 w-16" />
+                <Skeleton className="h-10 w-full" />
+              </div>
+              <Skeleton className="h-10 w-full md:w-24" />
+            </div>
+          ) : (
+            <div className="flex flex-col md:flex-row gap-4 items-end">
+              <div className="flex-1 w-full">
+                <label className="block text-sm font-medium text-gray-700 mb-1.5">Select Product</label>
+                <select 
+                  className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-1 focus:ring-gray-900 focus:border-gray-900 transition-colors bg-white"
+                  value={selectedProductId}
+                  onChange={(e) => setSelectedProductId(e.target.value)}
+                  disabled={isLoadingProducts}
+                >
+                  <option value="">{isLoadingProducts ? "Loading products..." : "-- Choose a product --"}</option>
+                  {products.map((product: any) => (
+                    <option key={product._id} value={product._id} disabled={product.stockQuantity === 0}>
+                      {product.name} (Stock: {product.stockQuantity}) - ${product.sellingPrice?.toFixed(2)}
+                    </option>
+                  ))}
+                </select>
+              </div>
+              <div className="w-full md:w-32">
+                <label className="block text-sm font-medium text-gray-700 mb-1.5">Quantity</label>
+                <input 
+                  type="number" 
+                  min="1" 
+                  className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-1 focus:ring-gray-900 focus:border-gray-900 transition-colors" 
+                  value={quantity}
+                  onChange={(e) => setQuantity(Number(e.target.value))}
+                />
+              </div>
+              <button 
+                onClick={handleAddToCart}
+                disabled={!selectedProductId}
+                className="w-full md:w-auto flex items-center justify-center px-4 py-2 bg-gray-900 text-white rounded-md hover:bg-gray-800 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
               >
-                <option value="">{isLoadingProducts ? "Loading products..." : "-- Choose a product --"}</option>
-                {products.map((product: any) => (
-                  <option key={product._id} value={product._id} disabled={product.stockQuantity === 0}>
-                    {product.name} (Stock: {product.stockQuantity}) - ${product.sellingPrice?.toFixed(2)}
-                  </option>
-                ))}
-              </select>
+                <Plus className="w-4 h-4 mr-2" />
+                Add
+              </button>
             </div>
-            <div className="w-full md:w-32">
-              <label className="block text-sm font-medium text-gray-700 mb-1.5">Quantity</label>
-              <input 
-                type="number" 
-                min="1" 
-                className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-1 focus:ring-gray-900 focus:border-gray-900 transition-colors" 
-                value={quantity}
-                onChange={(e) => setQuantity(Number(e.target.value))}
-              />
-            </div>
-            <button 
-              onClick={handleAddToCart}
-              disabled={!selectedProductId}
-              className="w-full md:w-auto flex items-center justify-center px-4 py-2 bg-gray-900 text-white rounded-md hover:bg-gray-800 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
-            >
-              <Plus className="w-4 h-4 mr-2" />
-              Add
-            </button>
-          </div>
+          )}
         </div>
 
         <div className="p-6">

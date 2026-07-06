@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
 import { Plus, Search, Package2, Loader2, ChevronLeft, ChevronRight } from "lucide-react";
 import { useGetProductsQuery, useDeleteProductMutation } from "../../../redux/features/product/productApi";
+import { Skeleton } from "../../../components/ui/skeleton";
 import { AddProductModal } from "../components/AddProductModal";
 import { EditProductModal } from "../components/EditProductModal";
 import { DeleteProductModal } from "../components/DeleteProductModal";
@@ -79,8 +80,30 @@ export default function Products() {
         </div>
 
         {isLoading ? (
-          <div className="py-10 flex justify-center items-center text-gray-500">
-            <Loader2 className="w-6 h-6 animate-spin mr-2" /> Loading products...
+          <div className="space-y-4">
+            <div className="border rounded-md">
+              <div className="border-b px-4 py-3 grid grid-cols-6 gap-4">
+                {[...Array(6)].map((_, i) => (
+                  <Skeleton key={i} className="h-4 w-20" />
+                ))}
+              </div>
+              {[...Array(5)].map((_, i) => (
+                <div key={i} className="border-b px-4 py-4 grid grid-cols-6 gap-4 items-center">
+                  <Skeleton className="h-12 w-12 rounded-md" />
+                  <div className="space-y-2">
+                    <Skeleton className="h-4 w-32" />
+                    <Skeleton className="h-3 w-20" />
+                  </div>
+                  <Skeleton className="h-4 w-24" />
+                  <Skeleton className="h-4 w-16" />
+                  <Skeleton className="h-6 w-20 rounded-full" />
+                  <div className="flex space-x-2 justify-center">
+                    <Skeleton className="h-4 w-10" />
+                    <Skeleton className="h-4 w-12" />
+                  </div>
+                </div>
+              ))}
+            </div>
           </div>
         ) : error ? (
           <div className="py-10 text-center text-red-500">Failed to load products.</div>

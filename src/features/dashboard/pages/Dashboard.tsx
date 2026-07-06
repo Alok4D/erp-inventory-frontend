@@ -1,11 +1,8 @@
 import { useGetDashboardSummaryQuery } from '../../../redux/features/dashboard/dashboardApi';
+import { Skeleton } from '../../../components/ui/skeleton';
 
 export default function Dashboard() {
   const { data, isLoading, error } = useGetDashboardSummaryQuery(undefined);
-
-  if (isLoading) {
-    return <div className="p-6 text-center text-gray-500">Loading dashboard...</div>;
-  }
 
   if (error) {
     return <div className="p-6 text-center text-red-500">Failed to load dashboard data.</div>;
@@ -17,18 +14,37 @@ export default function Dashboard() {
     <div>
       <h1 className="text-2xl font-semibold mb-6">Dashboard</h1>
       <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-6">
-        <div className="bg-white p-6 rounded-lg shadow-sm border border-gray-100">
-          <h3 className="text-gray-500 text-sm font-medium">Total Products</h3>
-          <p className="text-3xl font-bold mt-2">{totalProducts || 0}</p>
-        </div>
-        <div className="bg-white p-6 rounded-lg shadow-sm border border-gray-100">
-          <h3 className="text-gray-500 text-sm font-medium">Total Sales</h3>
-          <p className="text-3xl font-bold mt-2">{totalSalesCount || 0}</p>
-        </div>
-        <div className="bg-white p-6 rounded-lg shadow-sm border border-gray-100">
-          <h3 className="text-gray-500 text-sm font-medium">Low Stock Items</h3>
-          <p className="text-3xl font-bold mt-2 text-red-500">{lowStockProducts?.length || 0}</p>
-        </div>
+        {isLoading ? (
+          <>
+            <div className="bg-white p-6 rounded-lg shadow-sm border border-gray-100">
+              <Skeleton className="h-4 w-24 mb-2" />
+              <Skeleton className="h-8 w-16" />
+            </div>
+            <div className="bg-white p-6 rounded-lg shadow-sm border border-gray-100">
+              <Skeleton className="h-4 w-20 mb-2" />
+              <Skeleton className="h-8 w-16" />
+            </div>
+            <div className="bg-white p-6 rounded-lg shadow-sm border border-gray-100">
+              <Skeleton className="h-4 w-32 mb-2" />
+              <Skeleton className="h-8 w-16" />
+            </div>
+          </>
+        ) : (
+          <>
+            <div className="bg-white p-6 rounded-lg shadow-sm border border-gray-100">
+              <h3 className="text-gray-500 text-sm font-medium">Total Products</h3>
+              <p className="text-3xl font-bold mt-2">{totalProducts || 0}</p>
+            </div>
+            <div className="bg-white p-6 rounded-lg shadow-sm border border-gray-100">
+              <h3 className="text-gray-500 text-sm font-medium">Total Sales</h3>
+              <p className="text-3xl font-bold mt-2">{totalSalesCount || 0}</p>
+            </div>
+            <div className="bg-white p-6 rounded-lg shadow-sm border border-gray-100">
+              <h3 className="text-gray-500 text-sm font-medium">Low Stock Items</h3>
+              <p className="text-3xl font-bold mt-2 text-red-500">{lowStockProducts?.length || 0}</p>
+            </div>
+          </>
+        )}
       </div>
       
       <div className="bg-white rounded-lg shadow-sm border border-gray-100 p-6">
@@ -43,7 +59,15 @@ export default function Dashboard() {
               </tr>
             </thead>
             <tbody>
-              {lowStockProducts && lowStockProducts.length > 0 ? (
+              {isLoading ? (
+                [...Array(3)].map((_, i) => (
+                  <tr key={i} className="border-b border-gray-100">
+                    <td className="py-4 px-4"><Skeleton className="h-4 w-32" /></td>
+                    <td className="py-4 px-4"><Skeleton className="h-4 w-20" /></td>
+                    <td className="py-4 px-4"><Skeleton className="h-4 w-12" /></td>
+                  </tr>
+                ))
+              ) : lowStockProducts && lowStockProducts.length > 0 ? (
                 lowStockProducts.map((product: any) => (
                   <tr key={product._id} className="border-b border-gray-100">
                     <td className="py-3 px-4">{product.name}</td>
