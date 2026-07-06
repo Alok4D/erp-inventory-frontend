@@ -4,11 +4,16 @@ import Dashboard from "../features/dashboard/pages/Dashboard";
 import Products from "../features/products/pages/Products";
 import Sales from "../features/sales/pages/Sales";
 import Login from "../features/auth/pages/Login";
+import Signup from "../features/auth/pages/Signup";
 
 export const router = createBrowserRouter([
   {
     path: "/login",
     element: <Login />,
+  },
+  {
+    path: "/signup",
+    element: <Signup />,
   },
   {
     path: "/",

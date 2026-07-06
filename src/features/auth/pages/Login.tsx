@@ -1,5 +1,5 @@
 import { useForm } from 'react-hook-form';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, Link } from 'react-router-dom';
 import { useLoginMutation } from '../../../redux/features/auth/authApi';
 import { setUser, type TUser,  } from '../../../redux/features/auth/authSlice';
 import { useAppDispatch } from '../../../redux/hooks';
@@ -68,6 +68,13 @@ export default function Login() {
             {isLoading ? 'Signing in...' : 'Sign in'}
           </button>
         </form>
+        
+        <div className="mt-6 text-center text-sm text-gray-500">
+          Don't have an account?{' '}
+          <Link to="/signup" className="font-medium text-gray-900 hover:underline">
+            Sign up
+          </Link>
+        </div>
       </div>
     </div>
   );
