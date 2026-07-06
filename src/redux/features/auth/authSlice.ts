@@ -2,10 +2,11 @@ import { createSlice } from '@reduxjs/toolkit';
 import type { PayloadAction } from '@reduxjs/toolkit';
 
 export type TUser = {
-  userId: string; // which is the email
+  email: string;
+  name: string;
   role: string;
-  iat: number;
-  exp: number;
+  iat?: number;
+  exp?: number;
 };
 
 type TAuthState = {

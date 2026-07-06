@@ -1,6 +1,9 @@
-import { Link, useLocation } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import { LayoutDashboard, Package, ShoppingCart, LogOut } from "lucide-react";
 import clsx from "clsx";
+import { useLogoutMutation } from "../../../redux/features/auth/authApi";
+import { useAppDispatch } from "../../../redux/hooks";
+import { logout } from "../../../redux/features/auth/authSlice";
 
 const navigation = [
   { name: "Dashboard", href: "/", icon: LayoutDashboard },
@@ -10,6 +13,19 @@ const navigation = [
 
 export function Sidebar() {
   const location = useLocation();
+  const navigate = useNavigate();
+  const dispatch = useAppDispatch();
+  const [logoutApi] = useLogoutMutation();
+
+  const handleLogout = async () => {
+    try {
+      await logoutApi(undefined).unwrap();
+      dispatch(logout());
+      navigate('/login');
+    } catch (err) {
+      console.error("Failed to logout", err);
+    }
+  };
 
   return (
     <div className="flex flex-col w-64 bg-gray-900 text-white min-h-screen">
@@ -37,7 +53,10 @@ export function Sidebar() {
         })}
       </div>
       <div className="p-4 border-t border-gray-800">
-        <button className="flex items-center w-full px-4 py-3 text-gray-400 rounded-lg hover:bg-gray-800 hover:text-white transition-colors">
+        <button 
+          onClick={handleLogout}
+          className="flex items-center w-full px-4 py-3 text-gray-400 rounded-lg hover:bg-gray-800 hover:text-white transition-colors"
+        >
           <LogOut className="w-5 h-5 mr-3" />
           Logout
         </button>

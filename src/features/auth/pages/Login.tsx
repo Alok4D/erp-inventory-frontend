@@ -3,7 +3,6 @@ import { useNavigate } from 'react-router-dom';
 import { useLoginMutation } from '../../../redux/features/auth/authApi';
 import { setUser, type TUser,  } from '../../../redux/features/auth/authSlice';
 import { useAppDispatch } from '../../../redux/hooks';
-import { jwtDecode } from 'jwt-decode';
 import { useState } from 'react';
 
 export default function Login() {
@@ -20,7 +19,7 @@ export default function Login() {
       const res = await login(data).unwrap();
       
       const token = res.data.accessToken;
-      const user = jwtDecode(token) as TUser;
+      const user = res.data.user as TUser; // Now using user data directly from the login response!
       
       dispatch(setUser({ user, token }));
       
