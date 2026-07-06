@@ -1,20 +1,33 @@
+import { useGetDashboardSummaryQuery } from '../../../redux/features/dashboard/dashboardApi';
+
 export default function Dashboard() {
+  const { data, isLoading, error } = useGetDashboardSummaryQuery(undefined);
+
+  if (isLoading) {
+    return <div className="p-6 text-center text-gray-500">Loading dashboard...</div>;
+  }
+
+  if (error) {
+    return <div className="p-6 text-center text-red-500">Failed to load dashboard data.</div>;
+  }
+
+  const { totalProducts, totalSalesCount, lowStockProducts } = data?.data || {};
+
   return (
     <div>
       <h1 className="text-2xl font-semibold mb-6">Dashboard</h1>
       <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-6">
-        {/* Stat Cards placeholders */}
         <div className="bg-white p-6 rounded-lg shadow-sm border border-gray-100">
           <h3 className="text-gray-500 text-sm font-medium">Total Products</h3>
-          <p className="text-3xl font-bold mt-2">120</p>
+          <p className="text-3xl font-bold mt-2">{totalProducts || 0}</p>
         </div>
         <div className="bg-white p-6 rounded-lg shadow-sm border border-gray-100">
           <h3 className="text-gray-500 text-sm font-medium">Total Sales</h3>
-          <p className="text-3xl font-bold mt-2">45</p>
+          <p className="text-3xl font-bold mt-2">{totalSalesCount || 0}</p>
         </div>
         <div className="bg-white p-6 rounded-lg shadow-sm border border-gray-100">
           <h3 className="text-gray-500 text-sm font-medium">Low Stock Items</h3>
-          <p className="text-3xl font-bold mt-2 text-red-500">8</p>
+          <p className="text-3xl font-bold mt-2 text-red-500">{lowStockProducts?.length || 0}</p>
         </div>
       </div>
       
@@ -30,16 +43,21 @@ export default function Dashboard() {
               </tr>
             </thead>
             <tbody>
-              <tr className="border-b border-gray-100">
-                <td className="py-3 px-4">Sample Product 1</td>
-                <td className="py-3 px-4">PRD-001</td>
-                <td className="py-3 px-4 text-red-500 font-medium">3</td>
-              </tr>
-              <tr>
-                <td className="py-3 px-4">Sample Product 2</td>
-                <td className="py-3 px-4">PRD-002</td>
-                <td className="py-3 px-4 text-red-500 font-medium">1</td>
-              </tr>
+              {lowStockProducts && lowStockProducts.length > 0 ? (
+                lowStockProducts.map((product: any) => (
+                  <tr key={product._id} className="border-b border-gray-100">
+                    <td className="py-3 px-4">{product.name}</td>
+                    <td className="py-3 px-4">{product.sku}</td>
+                    <td className="py-3 px-4 text-red-500 font-medium">{product.stockQuantity}</td>
+                  </tr>
+                ))
+              ) : (
+                <tr>
+                  <td colSpan={3} className="py-6 text-center text-gray-500">
+                    No low stock products found. All good!
+                  </td>
+                </tr>
+              )}
             </tbody>
           </table>
         </div>
