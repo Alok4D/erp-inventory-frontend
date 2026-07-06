@@ -1,27 +1,37 @@
 import { useState } from "react";
-import { Plus, Trash2, ShoppingCart } from "lucide-react";
-
-// Dummy data for static design
-const dummyProducts = [
-  { id: 1, name: "Wireless Mouse", price: 25.00, stock: 50, sku: "PRD-001" },
-  { id: 2, name: "Office Chair", price: 120.00, stock: 3, sku: "PRD-002" },
-  { id: 3, name: "Mechanical Keyboard", price: 75.00, stock: 15, sku: "PRD-003" },
-];
+import { Plus, Trash2, ShoppingCart, Loader2 } from "lucide-react";
+import { useGetProductsQuery } from "../../../redux/features/product/productApi";
+import { useCreateSaleMutation } from "../../../redux/features/sale/saleApi";
 
 export default function Sales() {
+  const { data: productsData, isLoading: isLoadingProducts } = useGetProductsQuery(undefined);
+  const [createSale, { isLoading: isCreatingSale }] = useCreateSaleMutation();
+
+  const products = productsData?.data || [];
   
-  const [cart, setCart] = useState<{ id: number; product: typeof dummyProducts[0]; quantity: number }[]>([]);
+  const [cart, setCart] = useState<{ id: number; product: any; quantity: number }[]>([]);
   const [selectedProductId, setSelectedProductId] = useState("");
   const [quantity, setQuantity] = useState<number>(1);
+  const [error, setError] = useState("");
+  const [success, setSuccess] = useState("");
 
   const handleAddToCart = () => {
+    setError("");
+    setSuccess("");
     if (!selectedProductId || quantity <= 0) return;
     
-    const product = dummyProducts.find(p => p.id === Number(selectedProductId));
+    const product = products.find((p: any) => p._id === selectedProductId);
     if (!product) return;
 
-    // Check if product already in cart
-    const existingIndex = cart.findIndex(item => item.product.id === product.id);
+    // Check stock availability (considering what's already in the cart)
+    const existingIndex = cart.findIndex(item => item.product._id === product._id);
+    const currentCartQty = existingIndex >= 0 ? cart[existingIndex].quantity : 0;
+    
+    if (currentCartQty + quantity > product.stockQuantity) {
+      setError(`Cannot add ${quantity} more. Only ${product.stockQuantity - currentCartQty} left in stock.`);
+      return;
+    }
+
     if (existingIndex >= 0) {
       const newCart = [...cart];
       newCart[existingIndex].quantity += quantity;
@@ -30,7 +40,6 @@ export default function Sales() {
       setCart([...cart, { id: Date.now(), product, quantity }]);
     }
     
-    // Reset selection
     setSelectedProductId("");
     setQuantity(1);
   };
@@ -39,13 +48,47 @@ export default function Sales() {
     setCart(cart.filter(item => item.id !== itemId));
   };
 
-  const grandTotal = cart.reduce((total, item) => total + (item.product.price * item.quantity), 0);
+  const grandTotal = cart.reduce((total, item) => total + (item.product.sellingPrice * item.quantity), 0);
+
+  const handleSubmitSale = async () => {
+    if (cart.length === 0) return;
+    setError("");
+    setSuccess("");
+
+    try {
+      const saleData = {
+        items: cart.map(item => ({
+          product: item.product._id,
+          quantity: item.quantity
+        }))
+      };
+
+      await createSale(saleData).unwrap();
+      setCart([]);
+      setSuccess("Sale completed successfully!");
+    } catch (err: any) {
+      console.error("Failed to create sale:", err);
+      setError(err.data?.message || "Failed to create sale. Please try again.");
+    }
+  };
 
   return (
     <div className="space-y-6">
       <div className="flex justify-between items-center">
         <h1 className="text-2xl font-semibold">Create Sale</h1>
       </div>
+
+      {error && (
+        <div className="bg-red-50 text-red-600 p-4 rounded-md border border-red-200">
+          {error}
+        </div>
+      )}
+      
+      {success && (
+        <div className="bg-green-50 text-green-600 p-4 rounded-md border border-green-200">
+          {success}
+        </div>
+      )}
 
       <div className="bg-white rounded-lg shadow-sm border border-gray-100 overflow-hidden">
         <div className="p-6 bg-gray-50/50 border-b border-gray-100">
@@ -61,11 +104,12 @@ export default function Sales() {
                 className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-1 focus:ring-gray-900 focus:border-gray-900 transition-colors bg-white"
                 value={selectedProductId}
                 onChange={(e) => setSelectedProductId(e.target.value)}
+                disabled={isLoadingProducts}
               >
-                <option value="">-- Choose a product --</option>
-                {dummyProducts.map(product => (
-                  <option key={product.id} value={product.id}>
-                    {product.name} (Stock: {product.stock}) - ${product.price.toFixed(2)}
+                <option value="">{isLoadingProducts ? "Loading products..." : "-- Choose a product --"}</option>
+                {products.map((product: any) => (
+                  <option key={product._id} value={product._id} disabled={product.stockQuantity === 0}>
+                    {product.name} (Stock: {product.stockQuantity}) - ${product.sellingPrice?.toFixed(2)}
                   </option>
                 ))}
               </select>
@@ -119,10 +163,10 @@ export default function Sales() {
                       <tr key={item.id} className="border-b border-gray-100 hover:bg-gray-50">
                         <td className="py-3 px-4 text-gray-900">{item.product.name}</td>
                         <td className="py-3 px-4 text-gray-500 text-sm">{item.product.sku}</td>
-                        <td className="py-3 px-4 text-right">${item.product.price.toFixed(2)}</td>
+                        <td className="py-3 px-4 text-right">${item.product.sellingPrice?.toFixed(2)}</td>
                         <td className="py-3 px-4 text-center">{item.quantity}</td>
                         <td className="py-3 px-4 text-right font-medium text-gray-900">
-                          ${(item.product.price * item.quantity).toFixed(2)}
+                          ${(item.product.sellingPrice * item.quantity).toFixed(2)}
                         </td>
                         <td className="py-3 px-4 text-center">
                           <button 
@@ -144,17 +188,18 @@ export default function Sales() {
                     <span>Subtotal</span>
                     <span>${grandTotal.toFixed(2)}</span>
                   </div>
-                  <div className="flex justify-between items-center mb-4 text-sm text-gray-600">
-                    <span>Tax (0%)</span>
-                    <span>$0.00</span>
-                  </div>
                   <div className="flex justify-between items-center pt-3 border-t border-gray-200">
                     <span className="text-lg font-semibold text-gray-900">Grand Total</span>
                     <span className="text-xl font-bold text-gray-900">${grandTotal.toFixed(2)}</span>
                   </div>
                   
-                  <button className="w-full mt-6 bg-gray-900 text-white py-3 rounded-md font-medium hover:bg-gray-800 transition-colors shadow-sm">
-                    Submit Sale
+                  <button 
+                    onClick={handleSubmitSale}
+                    disabled={isCreatingSale || cart.length === 0}
+                    className="w-full mt-6 flex items-center justify-center bg-gray-900 text-white py-3 rounded-md font-medium hover:bg-gray-800 transition-colors shadow-sm disabled:opacity-50 disabled:cursor-not-allowed"
+                  >
+                    {isCreatingSale && <Loader2 className="w-4 h-4 mr-2 animate-spin" />}
+                    {isCreatingSale ? "Processing..." : "Submit Sale"}
                   </button>
                 </div>
               </div>
