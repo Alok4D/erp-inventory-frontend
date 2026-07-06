@@ -1,5 +1,5 @@
+import { useAppSelector } from "@/redux/hooks";
 import { User, Bell } from "lucide-react";
-import { useAppSelector } from "../../../redux/hooks";
 
 export function Navbar() {
   const user = useAppSelector((state) => state.auth.user);

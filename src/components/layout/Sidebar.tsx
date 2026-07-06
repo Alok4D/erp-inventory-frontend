@@ -1,9 +1,9 @@
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import { LayoutDashboard, Package, ShoppingCart, LogOut } from "lucide-react";
 import clsx from "clsx";
-import { useLogoutMutation } from "../../../redux/features/auth/authApi";
-import { useAppDispatch } from "../../../redux/hooks";
-import { logout } from "../../../redux/features/auth/authSlice";
+import { useAppDispatch } from "@/redux/hooks";
+import { useLogoutMutation } from "@/redux/features/auth/authApi";
+import { logout } from "@/redux/features/auth/authSlice";
 
 const navigation = [
   { name: "Dashboard", href: "/", icon: LayoutDashboard },
