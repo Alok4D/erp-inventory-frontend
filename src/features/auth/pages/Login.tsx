@@ -38,50 +38,83 @@ export default function Login() {
   };
 
   return (
-    <div className="flex min-h-screen items-center justify-center bg-gray-50">
-      <div className="w-full max-w-md p-8 bg-white rounded-lg shadow-md">
-        <h2 className="text-2xl font-bold text-center mb-6">Login to Mini ERP</h2>
-        <p className="text-center text-gray-500 mb-6">Enter your credentials to access your account.</p>
-        
-        {errorMsg && (
-          <div className="mb-4 p-3 bg-red-100 text-red-700 rounded text-sm text-center">
-            {errorMsg}
-          </div>
-        )}
+    <div className="flex min-h-screen bg-white">
+      {/* Left Side - Image/Banner */}
+      <div className="hidden lg:flex lg:w-1/2 relative">
+        <div className="absolute inset-0 bg-indigo-600">
+          <img 
+            src="https://images.unsplash.com/photo-1460925895917-afdab827c52f?q=80&w=2426&auto=format&fit=crop" 
+            alt="Dashboard Analytics" 
+            className="absolute inset-0 w-full h-full object-cover mix-blend-overlay opacity-50"
+          />
+        </div>
+        <div className="relative z-10 flex flex-col justify-center px-12 text-white">
+          <h1 className="text-5xl font-extrabold tracking-tight mb-6">Mini ERP System</h1>
+          <p className="text-xl text-indigo-100 max-w-lg leading-relaxed">
+            Manage your products, track sales, and control permissions all in one intuitive platform.
+          </p>
+        </div>
+      </div>
 
-        <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
-          <div>
-            <label className="block text-sm font-medium text-gray-700">Email</label>
-            <input 
-              type="email" 
-              {...register('email', { required: true })}
-              className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-gray-900 focus:border-gray-900" 
-              placeholder="admin@erp.com" 
-            />
+      {/* Right Side - Form */}
+      <div className="flex w-full lg:w-1/2 items-center justify-center p-8 sm:p-12 lg:p-24 bg-gray-50/50">
+        <div className="w-full max-w-md space-y-8">
+          <div className="text-center">
+            <h2 className="text-3xl font-bold text-gray-900 mb-2">Log In to Your Account</h2>
+            <p className="text-gray-500 text-sm">Welcome back! Please enter your details.</p>
           </div>
-          <div>
-            <label className="block text-sm font-medium text-gray-700">Password</label>
-            <input 
-              type="password" 
-              {...register('password', { required: true })}
-              className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-gray-900 focus:border-gray-900" 
-              placeholder="••••••••" 
-            />
+          
+          {errorMsg && (
+            <div className="p-3 bg-red-50 border border-red-100 text-red-600 rounded-lg text-sm text-center font-medium">
+              {errorMsg}
+            </div>
+          )}
+
+          <form onSubmit={handleSubmit(onSubmit)} className="space-y-6 mt-8">
+            <div>
+              <label className="block text-sm font-medium text-gray-700 mb-1.5">Email Address</label>
+              <input 
+                type="email" 
+                {...register('email', { required: true })}
+                className="block w-full px-4 py-3 bg-white border border-gray-200 rounded-lg text-gray-900 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent transition-all" 
+                placeholder="admin@erp.com" 
+              />
+            </div>
+            <div>
+              <label className="block text-sm font-medium text-gray-700 mb-1.5">Password</label>
+              <input 
+                type="password" 
+                {...register('password', { required: true })}
+                className="block w-full px-4 py-3 bg-white border border-gray-200 rounded-lg text-gray-900 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent transition-all" 
+                placeholder="••••••••" 
+              />
+            </div>
+            
+            <div className="flex items-center justify-between">
+              <div className="flex items-center">
+                <input id="remember-me" type="checkbox" className="h-4 w-4 text-indigo-600 focus:ring-indigo-500 border-gray-300 rounded" />
+                <label htmlFor="remember-me" className="ml-2 block text-sm text-gray-600">Remember Me</label>
+              </div>
+              <div className="text-sm">
+                <a href="#" className="font-medium text-indigo-600 hover:text-indigo-500">Forgot password?</a>
+              </div>
+            </div>
+
+            <button 
+              type="submit" 
+              disabled={isLoading}
+              className="w-full flex justify-center py-3 px-4 border border-transparent rounded-lg shadow-sm text-sm font-semibold text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 disabled:bg-indigo-300 disabled:cursor-not-allowed transition-colors"
+            >
+              {isLoading ? 'Signing in...' : 'Log In'}
+            </button>
+          </form>
+          
+          <div className="mt-8 text-center text-sm text-gray-500">
+            Don't have an account?{' '}
+            <Link to="/signup" className="font-semibold text-indigo-600 hover:text-indigo-500 hover:underline">
+              Sign Up!
+            </Link>
           </div>
-          <button 
-            type="submit" 
-            disabled={isLoading}
-            className="w-full flex justify-center py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-gray-900 hover:bg-gray-800 focus:outline-none disabled:bg-gray-400"
-          >
-            {isLoading ? 'Signing in...' : 'Sign in'}
-          </button>
-        </form>
-        
-        <div className="mt-6 text-center text-sm text-gray-500">
-          Don't have an account?{' '}
-          <Link to="/signup" className="font-medium text-gray-900 hover:underline">
-            Sign up
-          </Link>
         </div>
       </div>
     </div>
