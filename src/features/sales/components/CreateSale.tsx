@@ -1,13 +1,25 @@
-import { useState } from "react";
-import { Plus, Trash2, ShoppingCart, Loader2 } from "lucide-react";
+import { useState, useEffect } from "react";
+import { Plus, Trash2, ShoppingCart, Loader2, Search } from "lucide-react";
 import { useGetProductsQuery } from "../../../redux/features/product/productApi";
 import { useCreateSaleMutation } from "../../../redux/features/sale/saleApi";
 import { Skeleton } from "../../../components/ui/skeleton";
 import Swal from "sweetalert2";
 
 export function CreateSale() {
-  
-  const { data: productsData, isLoading: isLoadingProducts } = useGetProductsQuery(undefined);
+  const [searchTerm, setSearchTerm] = useState("");
+  const [debouncedSearch, setDebouncedSearch] = useState("");
+
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      setDebouncedSearch(searchTerm);
+    }, 500);
+    return () => clearTimeout(timer);
+  }, [searchTerm]);
+
+  const { data: productsData, isLoading: isLoadingProducts } = useGetProductsQuery({
+    searchTerm: debouncedSearch,
+    limit: 100 
+  });
   const [createSale, { isLoading: isCreatingSale }] = useCreateSaleMutation();
 
   const products = productsData?.data || [];
@@ -15,6 +27,13 @@ export function CreateSale() {
   const [cart, setCart] = useState<{ id: number; product: any; quantity: number }[]>([]);
   const [selectedProductId, setSelectedProductId] = useState("");
   const [quantity, setQuantity] = useState<number>(1);
+
+  // Auto-select product if search yields exactly 1 result
+  useEffect(() => {
+    if (products.length === 1 && debouncedSearch) {
+      setSelectedProductId(products[0]._id);
+    }
+  }, [products, debouncedSearch]);
 
   const handleAddToCart = () => {
     if (!selectedProductId || quantity <= 0) return;
@@ -46,6 +65,7 @@ export function CreateSale() {
     }
     
     setSelectedProductId("");
+    setSearchTerm("");
     setQuantity(1);
   };
 
@@ -96,29 +116,48 @@ export function CreateSale() {
             Add Products to Sale
           </h2>
           
-          {isLoadingProducts ? (
-            <div className="flex flex-col md:flex-row gap-4 items-end">
-              <div className="flex-1 w-full space-y-1.5">
+          {isLoadingProducts && !productsData ? (
+            <div className="grid grid-cols-1 md:grid-cols-12 gap-4 items-end">
+              <div className="md:col-span-4 w-full space-y-1.5">
                 <Skeleton className="h-4 w-24" />
                 <Skeleton className="h-10 w-full" />
               </div>
-              <div className="w-full md:w-32 space-y-1.5">
+              <div className="md:col-span-4 w-full space-y-1.5">
+                <Skeleton className="h-4 w-24" />
+                <Skeleton className="h-10 w-full" />
+              </div>
+              <div className="md:col-span-2 w-full space-y-1.5">
                 <Skeleton className="h-4 w-16" />
                 <Skeleton className="h-10 w-full" />
               </div>
-              <Skeleton className="h-10 w-full md:w-24" />
+              <div className="md:col-span-2">
+                <Skeleton className="h-10 w-full" />
+              </div>
             </div>
           ) : (
-            <div className="flex flex-col md:flex-row gap-4 items-end">
-              <div className="flex-1 w-full">
+            <div className="grid grid-cols-1 md:grid-cols-12 gap-4 items-end">
+              <div className="md:col-span-4 w-full">
+                <label className="block text-sm font-medium text-gray-700 mb-1.5">Search Product</label>
+                <div className="relative">
+                  <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 w-4 h-4" />
+                  <input
+                    type="text"
+                    placeholder="Search by name or SKU..."
+                    className="w-full pl-9 pr-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-1 focus:ring-gray-900 focus:border-gray-900 transition-colors"
+                    value={searchTerm}
+                    onChange={(e) => setSearchTerm(e.target.value)}
+                  />
+                </div>
+              </div>
+              <div className="md:col-span-4 w-full">
                 <label className="block text-sm font-medium text-gray-700 mb-1.5">Select Product</label>
                 <select 
                   className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-1 focus:ring-gray-900 focus:border-gray-900 transition-colors bg-white"
                   value={selectedProductId}
                   onChange={(e) => setSelectedProductId(e.target.value)}
-                  disabled={isLoadingProducts}
+                  disabled={isLoadingProducts && !productsData}
                 >
-                  <option value="">{isLoadingProducts ? "Loading products..." : "-- Choose a product --"}</option>
+                  <option value="">{isLoadingProducts && !productsData ? "Loading..." : "-- Choose a product --"}</option>
                   {products.map((product: any) => (
                     <option key={product._id} value={product._id} disabled={product.stockQuantity === 0}>
                       {product.name} (Stock: {product.stockQuantity}) - ${product.sellingPrice?.toFixed(2)}
@@ -126,7 +165,7 @@ export function CreateSale() {
                   ))}
                 </select>
               </div>
-              <div className="w-full md:w-32">
+              <div className="md:col-span-2 w-full">
                 <label className="block text-sm font-medium text-gray-700 mb-1.5">Quantity</label>
                 <input 
                   type="number" 
@@ -136,14 +175,16 @@ export function CreateSale() {
                   onChange={(e) => setQuantity(Number(e.target.value))}
                 />
               </div>
-              <button 
-                onClick={handleAddToCart}
-                disabled={!selectedProductId}
-                className="w-full md:w-auto flex items-center justify-center px-4 py-2 bg-gray-900 text-white rounded-md hover:bg-gray-800 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
-              >
-                <Plus className="w-4 h-4 mr-2" />
-                Add
-              </button>
+              <div className="md:col-span-2 w-full">
+                <button 
+                  onClick={handleAddToCart}
+                  disabled={!selectedProductId}
+                  className="w-full flex items-center justify-center px-4 py-2 bg-gray-900 text-white rounded-md hover:bg-gray-800 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
+                >
+                  <Plus className="w-4 h-4 mr-2" />
+                  Add
+                </button>
+              </div>
             </div>
           )}
         </div>
