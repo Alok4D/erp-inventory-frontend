@@ -86,7 +86,7 @@ export default function AddProduct() {
   };
 
   return (
-    <div className="max-w-full mx-auto p-4 sm:p-6 lg:p-8 animate-in fade-in duration-500 bg-gray-50/50 min-h-screen">
+    <div className="max-w-full mx-auto p-4 sm:p-6 lg:p-0 animate-in fade-in duration-500 bg-gray-50/50 min-h-screen">
       <div className="mb-6 flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
         <div>
           <h1 className="text-2xl font-bold text-gray-900">Add New Product</h1>
@@ -177,7 +177,7 @@ export default function AddProduct() {
         </div>
 
         {/* Right Column - Image and Actions */}
-        <div className="w-full lg:w-[350px] space-y-6 flex-shrink-0">
+        <div className="w-full lg:w-96 space-y-6 flex-shrink-0">
           <div className="bg-white rounded-xl shadow-sm border border-gray-100 p-6">
             <h2 className="text-lg font-semibold text-gray-800 mb-4">Product Image</h2>
             <div className="border-2 border-dashed border-gray-200 rounded-lg p-6 flex flex-col items-center justify-center text-center hover:bg-gray-50 transition-colors relative">

@@ -182,8 +182,8 @@ export default function EditProduct() {
           </div>
         </div>
 
-        {/* Right Column - Image and Actions */}
-        <div className="w-full lg:w-[350px] space-y-6 flex-shrink-0">
+        {/* Right Column - Image & Actions */}
+        <div className="w-full lg:w-96 space-y-6 flex-shrink-0">
           <div className="bg-white rounded-xl shadow-sm border border-gray-100 p-6">
             <h2 className="text-lg font-semibold text-gray-800 mb-4">Product Image</h2>
             <div className="border-2 border-dashed border-gray-200 rounded-lg p-6 flex flex-col items-center justify-center text-center hover:bg-gray-50 transition-colors relative">
