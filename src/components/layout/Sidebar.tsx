@@ -1,17 +1,18 @@
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import { LayoutDashboard, Package, ShoppingCart, LogOut } from "lucide-react";
 import clsx from "clsx";
-import { useAppDispatch } from "@/redux/hooks";
+import { useAppDispatch, useAppSelector } from "@/redux/hooks";
 import { useLogoutMutation } from "@/redux/features/auth/authApi";
 import { logout } from "@/redux/features/auth/authSlice";
 
-const navigation = [
-  { name: "Dashboard", href: "/", icon: LayoutDashboard },
-  { name: "Products", href: "/products", icon: Package },
-  { name: "Sales", href: "/sales", icon: ShoppingCart },
-];
-
 export function Sidebar() {
+  const user = useAppSelector((state) => state.auth.user);
+  
+  const navigation = [
+    { name: "Dashboard", href: "/", icon: LayoutDashboard, roles: ['admin', 'manager'] },
+    { name: "Products", href: "/products", icon: Package, roles: ['admin', 'manager', 'employee'] },
+    { name: "Sales", href: "/sales", icon: ShoppingCart, roles: ['admin', 'manager', 'employee'] },
+  ].filter(item => item.roles.includes(user?.role || ''));
   const location = useLocation();
   const navigate = useNavigate();
   const dispatch = useAppDispatch();

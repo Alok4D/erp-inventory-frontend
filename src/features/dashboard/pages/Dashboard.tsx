@@ -2,6 +2,7 @@ import { useGetDashboardSummaryQuery } from '../../../redux/features/dashboard/d
 import { Skeleton } from '../../../components/ui/skeleton';
 
 export default function Dashboard() {
+  
   const { data, isLoading, error } = useGetDashboardSummaryQuery(undefined);
 
   if (error) {

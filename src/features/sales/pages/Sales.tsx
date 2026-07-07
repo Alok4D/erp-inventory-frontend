@@ -3,11 +3,17 @@ import { Plus, Trash2, ShoppingCart, Loader2, History } from "lucide-react";
 import { useGetProductsQuery } from "../../../redux/features/product/productApi";
 import { useCreateSaleMutation, useGetSalesQuery } from "../../../redux/features/sale/saleApi";
 import { Skeleton } from "../../../components/ui/skeleton";
+import { useAppSelector } from "../../../redux/hooks";
 
 export default function Sales() {
-  const [activeTab, setActiveTab] = useState<'history' | 'create'>('history');
+  const user = useAppSelector((state) => state.auth.user);
+  const canViewHistory = user?.role === 'admin' || user?.role === 'manager';
 
-  const { data: salesData, isLoading: isLoadingSales } = useGetSalesQuery(undefined);
+  const [activeTab, setActiveTab] = useState<'history' | 'create'>(canViewHistory ? 'history' : 'create');
+
+  const { data: salesData, isLoading: isLoadingSales } = useGetSalesQuery(undefined, {
+    skip: !canViewHistory
+  });
   const sales = salesData?.data || [];
 
   const { data: productsData, isLoading: isLoadingProducts } = useGetProductsQuery(undefined);
@@ -86,17 +92,19 @@ export default function Sales() {
 
       {/* Tabs */}
       <div className="flex border-b border-gray-200">
-        <button
-          onClick={() => setActiveTab('history')}
-          className={`flex items-center py-3 px-6 text-sm font-medium border-b-2 transition-colors ${
-            activeTab === 'history' 
-              ? 'border-gray-900 text-gray-900' 
-              : 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300'
-          }`}
-        >
-          <History className="w-4 h-4 mr-2" />
-          Sales History
-        </button>
+        {canViewHistory && (
+          <button
+            onClick={() => setActiveTab('history')}
+            className={`flex items-center py-3 px-6 text-sm font-medium border-b-2 transition-colors ${
+              activeTab === 'history' 
+                ? 'border-gray-900 text-gray-900' 
+                : 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300'
+            }`}
+          >
+            <History className="w-4 h-4 mr-2" />
+            Sales History
+          </button>
+        )}
         <button
           onClick={() => setActiveTab('create')}
           className={`flex items-center py-3 px-6 text-sm font-medium border-b-2 transition-colors ${

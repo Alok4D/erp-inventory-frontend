@@ -27,11 +27,11 @@ export default function Login() {
       const res = await login(data).unwrap();
       
       const token = res.data.accessToken;
-      const user = res.data.user as TUser; // Now using user data directly from the login response!
+      const user = res.data.user as TUser;
       
       dispatch(setUser({ user, token }));
       
-      navigate('/'); // Redirect to dashboard after login
+      navigate('/');
     } catch (err: any) {
       setErrorMsg(err?.data?.message || 'Failed to login');
     }

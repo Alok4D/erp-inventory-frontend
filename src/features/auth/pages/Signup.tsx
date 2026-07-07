@@ -4,6 +4,7 @@ import { useSignupMutation } from '../../../redux/features/auth/authApi';
 import { useState } from 'react';
 
 export default function Signup() {
+  
   const { register, handleSubmit } = useForm();
   const [signup, { isLoading }] = useSignupMutation();
   const navigate = useNavigate();
