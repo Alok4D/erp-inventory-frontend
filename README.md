@@ -25,6 +25,12 @@ This is the frontend client for the **Mini ERP – Inventory & Sales Management 
   - Add multiple products to a shopping cart.
   - Real-time stock validation (prevents selling more than what's available).
   - Automatic calculation of subtotal and grand totals.
+- **Dynamic Role & Permission Management**: 
+  - Complete UI to create roles and assign specific permissions.
+  - Dynamic sidebar and route protection based on user permissions.
+- **Real-Time Notifications (Socket.io)**: 
+  - Instant dashboard data refresh and push notifications when a new sale is created by any user.
+- **Responsive Design**: Fully optimized for mobile, tablet, and desktop viewing with an interactive sidebar and dropdowns.
 
 ## Prerequisites
 - Node.js (v18 or higher)
