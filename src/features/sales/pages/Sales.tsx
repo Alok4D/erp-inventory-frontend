@@ -14,10 +14,10 @@ export default function Sales() {
       </div>
 
       {/* Tabs */}
-      <div className="flex border-b border-gray-200">
+      <div className="flex border-b border-gray-200 overflow-x-auto">
         <button
           onClick={() => setActiveTab('history')}
-          className={`flex items-center py-3 px-6 text-sm font-medium border-b-2 transition-colors ${
+          className={`flex items-center py-3 px-4 md:px-6 text-sm font-medium border-b-2 transition-colors whitespace-nowrap ${
             activeTab === 'history' 
               ? 'border-gray-900 text-gray-900' 
               : 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300'
@@ -28,7 +28,7 @@ export default function Sales() {
         </button>
         <button
           onClick={() => setActiveTab('create')}
-          className={`flex items-center py-3 px-6 text-sm font-medium border-b-2 transition-colors ${
+          className={`flex items-center py-3 px-4 md:px-6 text-sm font-medium border-b-2 transition-colors whitespace-nowrap ${
             activeTab === 'create' 
               ? 'border-gray-900 text-gray-900' 
               : 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300'

@@ -77,18 +77,18 @@ export function ProductTable({
         <table className="w-full text-left border-collapse">
           <thead>
             <tr className="border-b border-gray-200">
-              <th className="py-3 px-4 font-medium text-gray-600">Image</th>
-              <th className="py-3 px-4 font-medium text-gray-600">Product Name</th>
-              <th className="py-3 px-4 font-medium text-gray-600">Category</th>
-              <th className="py-3 px-4 font-medium text-gray-600">Selling Price</th>
-              <th className="py-3 px-4 font-medium text-gray-600">Stock</th>
-              {canManageProducts && <th className="py-3 px-4 font-medium text-gray-600 text-center">Actions</th>}
+              <th className="py-3 px-4 font-medium text-gray-600 whitespace-nowrap md:whitespace-normal">Image</th>
+              <th className="py-3 px-4 font-medium text-gray-600 whitespace-nowrap md:whitespace-normal">Product Name</th>
+              <th className="py-3 px-4 font-medium text-gray-600 whitespace-nowrap md:whitespace-normal">Category</th>
+              <th className="py-3 px-4 font-medium text-gray-600 whitespace-nowrap md:whitespace-normal">Selling Price</th>
+              <th className="py-3 px-4 font-medium text-gray-600 whitespace-nowrap md:whitespace-normal">Stock</th>
+              {canManageProducts && <th className="py-3 px-4 font-medium text-gray-600 text-center whitespace-nowrap md:whitespace-normal">Actions</th>}
             </tr>
           </thead>
           <tbody>
             {products.map((product: any) => (
               <tr key={product._id} className="border-b border-gray-100 hover:bg-gray-50">
-                <td className="py-3 px-4">
+                <td className="py-3 px-4 whitespace-nowrap md:whitespace-normal">
                   {product.imageUrl ? (
                     <img 
                       src={product.imageUrl} 
@@ -101,19 +101,19 @@ export function ProductTable({
                     </div>
                   )}
                 </td>
-                <td className="py-3 px-4">
+                <td className="py-3 px-4 whitespace-nowrap md:whitespace-normal">
                   <div className="font-medium text-gray-800">{product.name}</div>
                   <div className="text-xs text-gray-500">SKU: {product.sku}</div>
                 </td>
-                <td className="py-3 px-4 capitalize">{product.category}</td>
-                <td className="py-3 px-4">${product.sellingPrice?.toFixed(2)}</td>
-                <td className="py-3 px-4">
-                  <span className={`px-2 py-1 rounded-full text-xs font-medium ${product.stockQuantity < 5 ? 'bg-red-100 text-red-700' : 'bg-green-100 text-green-700'}`}>
+                <td className="py-3 px-4 capitalize whitespace-nowrap md:whitespace-normal">{product.category}</td>
+                <td className="py-3 px-4 whitespace-nowrap md:whitespace-normal">${product.sellingPrice?.toFixed(2)}</td>
+                <td className="py-3 px-4 whitespace-nowrap md:whitespace-normal">
+                  <span className={`px-2 py-1 rounded-full text-xs font-medium whitespace-nowrap md:whitespace-normal ${product.stockQuantity < 5 ? 'bg-red-100 text-red-700' : 'bg-green-100 text-green-700'}`}>
                     {product.stockQuantity} in stock
                   </span>
                 </td>
                 {canManageProducts && (
-                  <td className="py-3 px-4 text-center">
+                  <td className="py-3 px-4 text-center whitespace-nowrap md:whitespace-normal">
                     <button 
                       onClick={() => navigate(`/products/edit-product/${product._id}`, { state: { product } })}
                       className="text-blue-600 hover:underline mr-3 text-sm font-medium"
