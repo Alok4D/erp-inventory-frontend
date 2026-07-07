@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
 import { X, Check } from 'lucide-react';
+import Swal from 'sweetalert2';
 import { useCreateRoleMutation, useUpdateRoleMutation } from '../../../redux/features/role/roleApi';
-import { toast } from 'sonner';
 
 
 interface RoleModalProps {
@@ -52,21 +52,45 @@ export function RoleModal({ isOpen, onClose, role }: RoleModalProps) {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!name.trim()) {
-      toast.error('Role name is required');
+      Swal.fire({
+        position: 'top-end',
+        icon: 'error',
+        title: 'Role name is required',
+        showConfirmButton: false,
+        timer: 1500
+      });
       return;
     }
 
     try {
       if (role) {
         await updateRole({ id: role._id, data: { name, permissions } }).unwrap();
-        toast.success('Role updated successfully');
+        Swal.fire({
+          position: 'top-end',
+          icon: 'success',
+          title: 'Role updated successfully',
+          showConfirmButton: false,
+          timer: 1500
+        });
       } else {
         await createRole({ name, permissions }).unwrap();
-        toast.success('Role created successfully');
+        Swal.fire({
+          position: 'top-end',
+          icon: 'success',
+          title: 'Role created successfully',
+          showConfirmButton: false,
+          timer: 1500
+        });
       }
       onClose();
     } catch (err: any) {
-      toast.error(err.data?.message || 'Failed to save role');
+      Swal.fire({
+        position: 'top-end',
+        icon: 'error',
+        title: err.data?.message || 'Failed to save role',
+        showConfirmButton: false,
+        timer: 1500
+      });
     }
   };
 

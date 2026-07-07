@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { Plus, Edit, Trash2 } from 'lucide-react';
-import { toast } from 'sonner';
+import Swal from 'sweetalert2';
 import { useGetAllRolesQuery, useDeleteRoleMutation } from '../../../redux/features/role/roleApi';
 import { RoleModal } from '../components/RoleModal';
 import { useAppSelector } from '../../../redux/hooks';
@@ -24,23 +24,57 @@ export default function Roles() {
 
   const handleDelete = async (id: string, name: string) => {
     if (['admin', 'manager', 'employee'].includes(name.toLowerCase())) {
-      toast.error('Cannot delete system default roles');
+      Swal.fire({
+        position: 'top-end',
+        icon: 'error',
+        title: 'Cannot delete system default roles',
+        showConfirmButton: false,
+        timer: 1500
+      });
       return;
     }
     
-    if (window.confirm('Are you sure you want to delete this role?')) {
+    const result = await Swal.fire({
+      title: 'Are you sure?',
+      text: "You won't be able to revert this!",
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonColor: '#3085d6',
+      cancelButtonColor: '#d33',
+      confirmButtonText: 'Yes, delete it!'
+    });
+
+    if (result.isConfirmed) {
       try {
         await deleteRole(id).unwrap();
-        toast.success('Role deleted successfully');
+        Swal.fire({
+          position: 'top-end',
+          icon: 'success',
+          title: 'Role deleted successfully',
+          showConfirmButton: false,
+          timer: 1500
+        });
       } catch (err: any) {
-        toast.error(err.data?.message || 'Failed to delete role');
+        Swal.fire({
+          position: 'top-end',
+          icon: 'error',
+          title: err.data?.message || 'Failed to delete role',
+          showConfirmButton: false,
+          timer: 1500
+        });
       }
     }
   };
 
   const handleEdit = (role: any) => {
     if (['admin'].includes(role.name.toLowerCase())) {
-      toast.error('Cannot edit the master Admin role');
+      Swal.fire({
+        position: 'top-end',
+        icon: 'error',
+        title: 'Cannot edit the master Admin role',
+        showConfirmButton: false,
+        timer: 1500
+      });
       return;
     }
     setSelectedRole(role);

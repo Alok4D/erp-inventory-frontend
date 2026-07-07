@@ -5,7 +5,6 @@ import App from './App.tsx'
 import { Provider } from 'react-redux'
 import { PersistGate } from 'redux-persist/integration/react'
 import { store, persistor } from './redux/store'
-import { Toaster } from 'sonner'
 
 createRoot(document.getElementById('root')!).render(
   <StrictMode>
@@ -14,6 +13,5 @@ createRoot(document.getElementById('root')!).render(
         <App />
       </PersistGate>
     </Provider>
-    <Toaster position="top-right" />
   </StrictMode>,
 )

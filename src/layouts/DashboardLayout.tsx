@@ -3,7 +3,6 @@ import { Outlet, useLocation } from "react-router-dom";
 import { Sidebar } from "../components/layout/Sidebar";
 import { Navbar } from "../components/layout/Navbar";
 import { io } from "socket.io-client";
-import { toast } from "sonner";
 import { useAppDispatch } from "../redux/hooks";
 import { baseApi } from "../redux/api/baseApi";
 
@@ -30,7 +29,6 @@ export default function DashboardLayout() {
 
     socket.on("new_sale", (data) => {
       const msg = data.message || "New sale created!";
-      toast.success(msg);
       
       // Add to notifications dropdown
       setNotifications(prev => [
