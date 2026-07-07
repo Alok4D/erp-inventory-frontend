@@ -4,14 +4,13 @@ import { useLoginMutation } from '../../../redux/features/auth/authApi';
 import { setUser, type TUser,  } from '../../../redux/features/auth/authSlice';
 import { useAppDispatch, useAppSelector } from '../../../redux/hooks';
 import { useState, useEffect } from 'react';
+import Swal from 'sweetalert2';
 
 export default function Login() {
-  
   const { register, handleSubmit } = useForm();
   const [login, { isLoading }] = useLoginMutation();
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
-  const [errorMsg, setErrorMsg] = useState('');
   
   const token = useAppSelector((state) => state.auth.token);
 
@@ -23,7 +22,6 @@ export default function Login() {
 
   const onSubmit = async (data: any) => {
     try {
-      setErrorMsg('');
       const res = await login(data).unwrap();
       
       const token = res.data.accessToken;
@@ -31,9 +29,22 @@ export default function Login() {
       
       dispatch(setUser({ user, token }));
       
+      Swal.fire({
+        position: 'top-end',
+        icon: 'success',
+        title: 'Logged in successfully!',
+        showConfirmButton: false,
+        timer: 1500
+      });
       navigate('/');
     } catch (err: any) {
-      setErrorMsg(err?.data?.message || 'Failed to login');
+      Swal.fire({
+        position: 'top-end',
+        icon: 'error',
+        title: err?.data?.message || 'Failed to login',
+        showConfirmButton: false,
+        timer: 1500
+      });
     }
   };
 
@@ -63,12 +74,6 @@ export default function Login() {
             <h2 className="text-3xl font-bold text-gray-900 mb-2">Log In to Your Account</h2>
             <p className="text-gray-500 text-sm">Welcome back! Please enter your details.</p>
           </div>
-          
-          {errorMsg && (
-            <div className="p-3 bg-red-50 border border-red-100 text-red-600 rounded-lg text-sm text-center font-medium">
-              {errorMsg}
-            </div>
-          )}
 
           <form onSubmit={handleSubmit(onSubmit)} className="space-y-6 mt-8">
             <div>

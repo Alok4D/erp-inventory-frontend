@@ -2,20 +2,15 @@ import { useForm } from 'react-hook-form';
 import { useNavigate, Link } from 'react-router-dom';
 import { useSignupMutation } from '../../../redux/features/auth/authApi';
 import { useState } from 'react';
+import Swal from 'sweetalert2';
 
 export default function Signup() {
-  
   const { register, handleSubmit } = useForm();
   const [signup, { isLoading }] = useSignupMutation();
   const navigate = useNavigate();
-  const [errorMsg, setErrorMsg] = useState('');
-  const [successMsg, setSuccessMsg] = useState('');
 
   const onSubmit = async (data: any) => {
     try {
-      setErrorMsg('');
-      setSuccessMsg('');
-      
       const payload = {
         password: data.password,
         user: {
@@ -27,12 +22,24 @@ export default function Signup() {
 
       await signup(payload).unwrap();
       
-      setSuccessMsg('Account created successfully! Redirecting to login...');
+      Swal.fire({
+        position: 'top-end',
+        icon: 'success',
+        title: 'Account created successfully!',
+        showConfirmButton: false,
+        timer: 1500
+      });
       setTimeout(() => {
         navigate('/login');
-      }, 2000);
+      }, 1500);
     } catch (err: any) {
-      setErrorMsg(err?.data?.message || 'Failed to create account');
+      Swal.fire({
+        position: 'top-end',
+        icon: 'error',
+        title: err?.data?.message || 'Failed to create account',
+        showConfirmButton: false,
+        timer: 1500
+      });
     }
   };
 
@@ -63,18 +70,6 @@ export default function Signup() {
             <p className="text-gray-500 text-sm">Fill in the details below to get started.</p>
           </div>
           
-          {errorMsg && (
-            <div className="p-3 bg-red-50 border border-red-100 text-red-600 rounded-lg text-sm text-center font-medium">
-              {errorMsg}
-            </div>
-          )}
-          
-          {successMsg && (
-            <div className="p-3 bg-green-50 border border-green-100 text-green-700 rounded-lg text-sm text-center font-medium">
-              {successMsg}
-            </div>
-          )}
-
           <form onSubmit={handleSubmit(onSubmit)} className="space-y-5 mt-6">
             <div>
               <label className="block text-sm font-medium text-gray-700 mb-1.5">Full Name</label>
