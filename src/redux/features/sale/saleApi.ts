@@ -14,7 +14,14 @@ export const saleApi = baseApi.injectEndpoints({
       }),
       invalidatesTags: ['Sales', 'Products', 'Dashboard'],
     }),
+    deleteSale: builder.mutation({
+      query: (id) => ({
+        url: `/sales/${id}`,
+        method: 'DELETE',
+      }),
+      invalidatesTags: ['Sales', 'Products', 'Dashboard'],
+    }),
   }),
 });
 
-export const { useGetSalesQuery, useCreateSaleMutation } = saleApi;
+export const { useGetSalesQuery, useCreateSaleMutation, useDeleteSaleMutation } = saleApi;

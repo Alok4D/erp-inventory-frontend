@@ -1,11 +1,32 @@
-import { useGetSalesQuery } from "../../../redux/features/sale/saleApi";
+import { useGetSalesQuery, useDeleteSaleMutation } from "../../../redux/features/sale/saleApi";
 import { Skeleton } from "../../../components/ui/skeleton";
-import { History } from "lucide-react";
+import { History, Trash2, Loader2 } from "lucide-react";
+import { useAppSelector } from "../../../redux/hooks";
+import { useState } from "react";
 
 export function SalesHistory() {
-  
   const { data: salesData, isLoading: isLoadingSales } = useGetSalesQuery(undefined);
+  const [deleteSale] = useDeleteSaleMutation();
   const sales = salesData?.data || [];
+  
+  const user = useAppSelector((state) => state.auth.user);
+  const isAdmin = user?.role === 'admin';
+  
+  const [deletingId, setDeletingId] = useState<string | null>(null);
+
+  const handleDelete = async (id: string) => {
+    if (!window.confirm("Are you sure you want to delete this sale? The products will be returned to stock.")) return;
+    
+    setDeletingId(id);
+    try {
+      await deleteSale(id).unwrap();
+    } catch (err) {
+      console.error("Failed to delete sale:", err);
+      alert("Failed to delete sale");
+    } finally {
+      setDeletingId(null);
+    }
+  };
 
   return (
     <div className="bg-white rounded-lg shadow-sm border border-gray-100 overflow-hidden animate-in fade-in slide-in-from-bottom-2 duration-300">
@@ -43,6 +64,7 @@ export function SalesHistory() {
                 <th className="py-3 px-6 font-medium text-gray-600">Products Sold</th>
                 <th className="py-3 px-6 font-medium text-gray-600 text-center">Total Quantity</th>
                 <th className="py-3 px-6 font-medium text-gray-600 text-right">Total Amount</th>
+                {isAdmin && <th className="py-3 px-6 font-medium text-gray-600 text-center">Actions</th>}
               </tr>
             </thead>
             <tbody>
@@ -69,6 +91,22 @@ export function SalesHistory() {
                   <td className="py-4 px-6 text-right font-medium text-gray-900">
                     ${sale.items.reduce((sum: number, item: any) => sum + (item.quantity * item.unitPrice), 0).toFixed(2)}
                   </td>
+                  {isAdmin && (
+                    <td className="py-4 px-6 text-center">
+                      <button
+                        onClick={() => handleDelete(sale._id)}
+                        disabled={deletingId === sale._id}
+                        className="text-red-500 hover:text-red-700 hover:bg-red-50 p-2 rounded-full transition-colors disabled:opacity-50"
+                        title="Delete Sale"
+                      >
+                        {deletingId === sale._id ? (
+                          <Loader2 className="w-4 h-4 animate-spin" />
+                        ) : (
+                          <Trash2 className="w-4 h-4" />
+                        )}
+                      </button>
+                    </td>
+                  )}
                 </tr>
               ))}
             </tbody>
