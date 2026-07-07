@@ -6,9 +6,12 @@ import { useState } from "react";
 import { DeleteSaleModal } from "./DeleteSaleModal";
 
 export function SalesHistory() {
-  const { data: salesData, isLoading: isLoadingSales } = useGetSalesQuery(undefined);
+  const [page, setPage] = useState(1);
+  const { data: salesData, isLoading: isLoadingSales } = useGetSalesQuery({ page, limit: 10 });
   const [deleteSale, { isLoading: isDeletingSale }] = useDeleteSaleMutation();
   const sales = salesData?.data || [];
+  const meta = salesData?.meta;
+  const totalPages = meta ? Math.ceil(meta.total / meta.limit) : 1;
   
   const user = useAppSelector((state) => state.auth.user);
   const isAdmin = user?.role === 'admin';
@@ -106,6 +109,28 @@ export function SalesHistory() {
               ))}
             </tbody>
           </table>
+          
+          {totalPages > 1 && (
+            <div className="flex items-center justify-between px-6 py-4 border-t border-gray-200 bg-gray-50/50">
+              <button 
+                disabled={page === 1} 
+                onClick={() => setPage(prev => prev - 1)}
+                className="px-4 py-2 border border-gray-300 rounded-md text-sm font-medium text-gray-700 bg-white hover:bg-gray-50 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
+              >
+                Previous
+              </button>
+              <span className="text-sm text-gray-700">
+                Page <span className="font-medium">{page}</span> of <span className="font-medium">{totalPages}</span>
+              </span>
+              <button 
+                disabled={page >= totalPages} 
+                onClick={() => setPage(prev => prev + 1)}
+                className="px-4 py-2 border border-gray-300 rounded-md text-sm font-medium text-gray-700 bg-white hover:bg-gray-50 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
+              >
+                Next
+              </button>
+            </div>
+          )}
         </div>
       )}
 
