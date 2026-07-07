@@ -5,6 +5,7 @@ export type TUser = {
   email: string;
   name: string;
   role: string;
+  permissions?: string[];
   iat?: number;
   exp?: number;
 };

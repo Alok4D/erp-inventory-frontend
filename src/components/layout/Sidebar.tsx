@@ -1,5 +1,5 @@
 import { Link, useLocation, useNavigate } from "react-router-dom";
-import { LayoutDashboard, Package, ShoppingCart, LogOut, Hexagon, X, User } from "lucide-react";
+import { LayoutDashboard, Package, ShoppingCart, LogOut, Hexagon, X, User, Shield } from "lucide-react";
 import clsx from "clsx";
 import { useAppDispatch, useAppSelector } from "@/redux/hooks";
 import { useLogoutMutation } from "@/redux/features/auth/authApi";
@@ -14,11 +14,22 @@ interface SidebarProps {
 export function Sidebar({ isCollapsed, isMobileOpen, setIsMobileOpen }: SidebarProps) {
   const user = useAppSelector((state) => state.auth.user);
   
-  const navigation = [
-    { name: "Dashboard", href: "/", icon: LayoutDashboard, roles: ['admin', 'manager'] },
-    { name: "Products", href: "/products", icon: Package, roles: ['admin', 'manager', 'employee'] },
-    { name: "Sales", href: "/sales", icon: ShoppingCart, roles: ['admin', 'manager', 'employee'] },
-  ].filter(item => item.roles.includes(user?.role || ''));
+  const navigationItems = [
+    { name: "Dashboard", href: "/", icon: LayoutDashboard, permission: 'view_dashboard' },
+    { name: "Products", href: "/products", icon: Package, permission: 'view_products' },
+    { name: "Sales", href: "/sales", icon: ShoppingCart, permission: 'view_sales' },
+    { name: "Roles", href: "/roles", icon: Shield, permission: 'manage_roles' },
+  ];
+
+  const navigation = navigationItems.filter(item => {
+    // If permissions array exists, check it. Otherwise fallback to basic role check (for backward compatibility during migration)
+    if (user?.permissions) {
+      return user.permissions.includes(item.permission);
+    }
+    // Fallback if permissions aren't loaded yet
+    if (item.name === 'Roles') return user?.role === 'admin';
+    return true; 
+  });
   const location = useLocation();
   const navigate = useNavigate();
   const dispatch = useAppDispatch();

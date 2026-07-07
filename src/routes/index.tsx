@@ -6,6 +6,7 @@ import Sales from "../features/sales/pages/Sales";
 import Login from "../features/auth/pages/Login";
 import Signup from "../features/auth/pages/Signup";
 import ProtectedRoute from "../components/layout/ProtectedRoute";
+import Roles from "../features/roles/pages/Roles";
 
 export const router = createBrowserRouter([
   {
@@ -34,6 +35,10 @@ export const router = createBrowserRouter([
           {
             path: "/sales",
             element: <Sales />,
+          },
+          {
+            path: "/roles",
+            element: <Roles />,
           },
         ],
       },
