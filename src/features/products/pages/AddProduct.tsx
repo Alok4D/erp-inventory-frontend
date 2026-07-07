@@ -79,79 +79,111 @@ export default function AddProduct() {
   };
 
   return (
-    <div className="max-w-4xl mx-auto p-4 sm:p-6 lg:p-8 animate-in fade-in duration-500">
-      <div className="mb-6 flex items-center justify-between">
-        <div>
-          <h1 className="text-2xl font-bold text-gray-900">Add New Product</h1>
-          <p className="text-sm text-gray-500 mt-1">Fill in the information below to add a new product to your inventory.</p>
-        </div>
-        <button 
-          onClick={() => navigate('/products')}
-          className="flex items-center text-sm font-medium text-gray-600 hover:text-indigo-600 bg-white px-4 py-2 border border-gray-200 rounded-lg shadow-sm transition-colors"
-        >
-          <ArrowLeft className="w-4 h-4 mr-2" />
-          Back to Products
-        </button>
+    <div className="max-w-7xl mx-auto p-4 sm:p-6 lg:p-8 animate-in fade-in duration-500 bg-gray-50/50 min-h-screen">
+      <div className="mb-6">
+        <h1 className="text-2xl font-bold text-gray-900">Add New Product</h1>
+        <p className="text-sm text-gray-500 mt-1">Create a new product in your catalog</p>
       </div>
       
-      <div className="bg-white rounded-xl shadow-sm border border-gray-100 overflow-hidden">
-        <form onSubmit={handleSubmit} className="p-6 sm:p-8 space-y-6">
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-            <div>
-              <label className="block text-sm font-semibold text-gray-700 mb-2">Product Name <span className="text-red-500">*</span></label>
-              <input type="text" name="name" value={formData.name} onChange={handleChange} required className="w-full px-4 py-2.5 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent transition-all" placeholder="e.g. Wireless Mouse" />
-            </div>
-            <div>
-              <label className="block text-sm font-semibold text-gray-700 mb-2">SKU <span className="text-red-500">*</span></label>
-              <input type="text" name="sku" value={formData.sku} onChange={handleChange} required className="w-full px-4 py-2.5 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent transition-all" placeholder="PRD-001" />
-            </div>
-            <div>
-              <label className="block text-sm font-semibold text-gray-700 mb-2">Category <span className="text-red-500">*</span></label>
-              <select name="category" value={formData.category} onChange={handleChange} required className="w-full px-4 py-2.5 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent transition-all bg-white">
-                <option value="">Select Category</option>
-                <option value="electronics">Electronics</option>
-                <option value="clothing">Clothing</option>
-                <option value="furniture">Furniture</option>
-              </select>
-            </div>
-            <div>
-              <label className="block text-sm font-semibold text-gray-700 mb-2">Stock Quantity</label>
-              <input type="number" name="stockQuantity" value={formData.stockQuantity} onChange={handleChange} min="0" className="w-full px-4 py-2.5 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent transition-all" placeholder="0" />
-            </div>
-            <div>
-              <label className="block text-sm font-semibold text-gray-700 mb-2">Purchase Price ($) <span className="text-red-500">*</span></label>
-              <input type="number" name="purchasePrice" value={formData.purchasePrice} onChange={handleChange} step="0.01" min="0" required className="w-full px-4 py-2.5 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent transition-all" placeholder="0.00" />
-            </div>
-            <div>
-              <label className="block text-sm font-semibold text-gray-700 mb-2">Selling Price ($) <span className="text-red-500">*</span></label>
-              <input type="number" name="sellingPrice" value={formData.sellingPrice} onChange={handleChange} step="0.01" min="0" required className="w-full px-4 py-2.5 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent transition-all" placeholder="0.00" />
+      <form onSubmit={handleSubmit} className="flex flex-col lg:flex-row gap-6">
+        {/* Left Column - Product Information */}
+        <div className="flex-1 space-y-6">
+          <div className="bg-white rounded-xl shadow-sm border border-gray-100 p-6">
+            <h2 className="text-lg font-semibold text-gray-800 mb-6">Product Information</h2>
+            
+            <div className="space-y-5">
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-1.5">Product Name <span className="text-red-500">*</span></label>
+                <input type="text" name="name" value={formData.name} onChange={handleChange} required className="w-full px-4 py-2.5 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent transition-all text-sm" placeholder="e.g. N95 Respirator Face Mask" />
+              </div>
+
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 mb-1.5">Category <span className="text-red-500">*</span></label>
+                  <select name="category" value={formData.category} onChange={handleChange} required className="w-full px-4 py-2.5 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent transition-all bg-white text-sm text-gray-700">
+                    <option value="">Select category</option>
+                    <option value="electronics">Electronics</option>
+                    <option value="clothing">Clothing</option>
+                    <option value="furniture">Furniture</option>
+                  </select>
+                </div>
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 mb-1.5">SKU / Model Number <span className="text-red-500">*</span></label>
+                  <input type="text" name="sku" value={formData.sku} onChange={handleChange} required className="w-full px-4 py-2.5 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent transition-all text-sm" placeholder="e.g. N95-8210-20" />
+                </div>
+              </div>
+
+              <div className="grid grid-cols-1 md:grid-cols-3 gap-5">
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 mb-1.5">Purchase Price ($) <span className="text-red-500">*</span></label>
+                  <input type="number" name="purchasePrice" value={formData.purchasePrice} onChange={handleChange} step="0.01" min="0" required className="w-full px-4 py-2.5 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent transition-all text-sm" placeholder="0.00" />
+                </div>
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 mb-1.5">Selling Price ($) <span className="text-red-500">*</span></label>
+                  <input type="number" name="sellingPrice" value={formData.sellingPrice} onChange={handleChange} step="0.01" min="0" required className="w-full px-4 py-2.5 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent transition-all text-sm" placeholder="0.00" />
+                </div>
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 mb-1.5">Stock Quantity <span className="text-red-500">*</span></label>
+                  <input type="number" name="stockQuantity" value={formData.stockQuantity} onChange={handleChange} min="0" required className="w-full px-4 py-2.5 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent transition-all text-sm" placeholder="0" />
+                </div>
+              </div>
             </div>
           </div>
-          
-          <div className="pt-4 border-t border-gray-100">
-            <label className="block text-sm font-semibold text-gray-700 mb-2">Product Image <span className="text-red-500">*</span></label>
-            <input type="file" accept="image/*" onChange={handleFileChange} className="w-full px-4 py-2.5 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent transition-all cursor-pointer text-sm file:mr-4 file:py-2 file:px-4 file:rounded-md file:border-0 file:text-sm file:font-semibold file:bg-indigo-50 file:text-indigo-700 hover:file:bg-indigo-100" required />
-            <p className="text-xs text-gray-500 mt-2">Image upload is required while creating a product.</p>
+        </div>
+
+        {/* Right Column - Image and Actions */}
+        <div className="w-full lg:w-[350px] space-y-6 flex-shrink-0">
+          <div className="bg-white rounded-xl shadow-sm border border-gray-100 p-6">
+            <h2 className="text-lg font-semibold text-gray-800 mb-4">Product Image</h2>
+            <div className="border-2 border-dashed border-gray-200 rounded-lg p-6 flex flex-col items-center justify-center text-center hover:bg-gray-50 transition-colors relative">
+              <input type="file" accept="image/*" onChange={handleFileChange} className="absolute inset-0 w-full h-full opacity-0 cursor-pointer" required />
+              {imageFile ? (
+                <div className="flex flex-col items-center">
+                  <div className="w-20 h-20 bg-indigo-50 text-indigo-500 rounded-lg flex items-center justify-center mb-2 overflow-hidden">
+                    <img src={URL.createObjectURL(imageFile)} alt="Preview" className="w-full h-full object-cover" />
+                  </div>
+                  <span className="text-sm font-medium text-gray-700 truncate w-48">{imageFile.name}</span>
+                </div>
+              ) : (
+                <div className="flex flex-col items-center py-4">
+                  <div className="w-12 h-12 bg-gray-50 rounded-full flex items-center justify-center mb-3">
+                    <svg className="w-6 h-6 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-8l-4-4m0 0L8 8m4-4v12" />
+                    </svg>
+                  </div>
+                  <span className="text-sm font-medium text-gray-600">Add Image</span>
+                  <span className="text-xs text-gray-400 mt-1">PNG, JPG, GIF up to 5MB</span>
+                </div>
+              )}
+            </div>
           </div>
-          
-          <div className="flex justify-end pt-6 border-t border-gray-100 mt-8">
+
+          <div className="space-y-3">
             <button 
               type="submit" 
               disabled={isLoading}
-              className="px-6 py-3 bg-indigo-600 text-white font-semibold rounded-lg shadow-sm hover:bg-indigo-700 transition-colors flex items-center disabled:opacity-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
+              className="w-full py-2.5 px-4 bg-indigo-100 text-indigo-700 font-medium rounded-lg hover:bg-indigo-200 transition-colors flex items-center justify-center disabled:opacity-50 text-sm"
             >
               {isLoading ? (
                 <>
-                  <Loader2 className="w-5 h-5 mr-2 animate-spin" />
-                  Saving...
+                  <Loader2 className="w-4 h-4 mr-2 animate-spin" />
+                  Publishing...
                 </>
               ) : (
-                'Save Product'
+                'Publish Product'
               )}
             </button>
+            <button 
+              type="button" 
+              onClick={() => navigate('/products')}
+              disabled={isLoading}
+              className="w-full py-2.5 px-4 bg-white border border-gray-200 text-gray-700 font-medium rounded-lg hover:bg-gray-50 transition-colors text-sm"
+            >
+              Cancel
+            </button>
           </div>
-        </form>
-      </div>
+        </div>
+      </form>
     </div>
   );
 }
