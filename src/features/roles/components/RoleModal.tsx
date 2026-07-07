@@ -75,7 +75,7 @@ export function RoleModal({ isOpen, onClose, role }: RoleModalProps) {
       <div className="flex min-h-screen items-center justify-center p-4">
         <div className="fixed inset-0 bg-black/50 backdrop-blur-sm transition-opacity" onClick={onClose} />
 
-        <div className="relative w-full max-w-md transform overflow-hidden rounded-none bg-white p-6 text-left shadow-xl transition-all">
+        <div className="relative w-full max-w-md transform overflow-hidden rounded-xs bg-white p-6 text-left shadow-xl transition-all">
           <div className="absolute right-4 top-4">
             <button onClick={onClose} className="text-gray-400 hover:text-gray-500">
               <X className="w-5 h-5" />
