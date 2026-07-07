@@ -12,9 +12,7 @@ export function Navbar() {
         </h2>
       </div>
       <div className="flex items-center space-x-4">
-        <button className="p-2 text-gray-400 hover:text-gray-600 transition-colors">
-          <Bell className="w-5 h-5" />
-        </button>
+      
         <div className="flex items-center space-x-2">
           <div className="w-8 h-8 rounded-full bg-gray-200 flex items-center justify-center">
             <User className="w-5 h-5 text-gray-500" />
