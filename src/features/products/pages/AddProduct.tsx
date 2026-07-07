@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { ArrowLeft, Loader2 } from "lucide-react";
+import { ArrowLeft, Loader2, X } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 import { useAddProductMutation } from "../../../redux/features/product/productApi";
 import Swal from "sweetalert2";
@@ -16,8 +16,15 @@ export default function AddProduct() {
     sellingPrice: '',
   });
   const [imageFile, setImageFile] = useState<File | null>(null);
+  const [isAddingNewCategory, setIsAddingNewCategory] = useState(false);
+  const [newCategory, setNewCategory] = useState('');
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
+    if (e.target.name === 'category' && e.target.value === 'add_new_category') {
+      setIsAddingNewCategory(true);
+      setFormData({ ...formData, category: '' });
+      return;
+    }
     setFormData({ ...formData, [e.target.name]: e.target.value });
   };
 
@@ -48,7 +55,7 @@ export default function AddProduct() {
       const productData = {
         name: formData.name,
         sku: formData.sku,
-        category: formData.category,
+        category: isAddingNewCategory ? newCategory : formData.category,
         stockQuantity: Number(formData.stockQuantity),
         purchasePrice: Number(formData.purchasePrice),
         sellingPrice: Number(formData.sellingPrice),
@@ -100,12 +107,40 @@ export default function AddProduct() {
               <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
                 <div>
                   <label className="block text-sm font-medium text-gray-700 mb-1.5">Category <span className="text-red-500">*</span></label>
-                  <select name="category" value={formData.category} onChange={handleChange} required className="w-full px-4 py-2.5 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent transition-all bg-white text-sm text-gray-700">
+                  <select 
+                    name="category" 
+                    value={isAddingNewCategory ? 'add_new_category' : formData.category} 
+                    onChange={handleChange} 
+                    required={!isAddingNewCategory} 
+                    className="w-full px-4 py-2.5 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent transition-all bg-white text-sm text-gray-700"
+                  >
                     <option value="">Select category</option>
                     <option value="electronics">Electronics</option>
                     <option value="clothing">Clothing</option>
                     <option value="furniture">Furniture</option>
+                    <option value="add_new_category" className="font-semibold text-indigo-600">+ Add New Category</option>
                   </select>
+                  {isAddingNewCategory && (
+                    <div className="mt-3 flex items-center gap-2 animate-in fade-in slide-in-from-top-2">
+                      <input 
+                        type="text" 
+                        value={newCategory} 
+                        onChange={(e) => setNewCategory(e.target.value)} 
+                        required 
+                        autoFocus
+                        className="w-full px-4 py-2.5 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent transition-all text-sm" 
+                        placeholder="Enter new category name" 
+                      />
+                      <button 
+                        type="button" 
+                        onClick={() => { setIsAddingNewCategory(false); setNewCategory(''); }}
+                        className="p-2 text-gray-400 hover:text-red-500 bg-gray-50 rounded-lg hover:bg-red-50 transition-colors"
+                        title="Cancel adding new category"
+                      >
+                        <X size={18} />
+                      </button>
+                    </div>
+                  )}
                 </div>
                 <div>
                   <label className="block text-sm font-medium text-gray-700 mb-1.5">SKU / Model Number <span className="text-red-500">*</span></label>
