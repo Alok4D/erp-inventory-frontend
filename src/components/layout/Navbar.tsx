@@ -74,7 +74,7 @@ export function Navbar({ isCollapsed, toggleSidebar, toggleMobileSidebar, notifi
           </button>
 
           {showNotifications && (
-            <div className="absolute right-0 mt-2 w-80 bg-white rounded-none shadow-sm border border-gray-100 overflow-hidden z-50">
+            <div className="absolute -right-16 sm:right-0 mt-2 w-[280px] sm:w-80 bg-white rounded-none shadow-sm border border-gray-100 overflow-hidden z-50">
               <div className="p-4 border-b border-gray-100 flex justify-between items-center bg-gray-50/50">
                 <h3 className="font-semibold text-gray-900 flex items-center">
                   <BellRing className="w-4 h-4 mr-2 text-indigo-600" />
@@ -119,7 +119,7 @@ export function Navbar({ isCollapsed, toggleSidebar, toggleMobileSidebar, notifi
         </div>
 
         <div className="flex items-center space-x-3">
-          <div className="flex flex-col text-right">
+          <div className="hidden sm:flex flex-col text-right">
             <span className="text-sm font-medium text-gray-900 leading-none">
               {user?.name || "Loading..."}
             </span>
