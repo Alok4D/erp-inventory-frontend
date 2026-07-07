@@ -86,7 +86,7 @@ export default function AddProduct() {
   };
 
   return (
-    <div className="max-w-7xl mx-auto p-4 sm:p-6 lg:p-8 animate-in fade-in duration-500 bg-gray-50/50 min-h-screen">
+    <div className="max-w-full mx-auto p-4 sm:p-6 lg:p-8 animate-in fade-in duration-500 bg-gray-50/50 min-h-screen">
       <div className="mb-6">
         <h1 className="text-2xl font-bold text-gray-900">Add New Product</h1>
         <p className="text-sm text-gray-500 mt-1">Create a new product in your catalog</p>
@@ -112,29 +112,29 @@ export default function AddProduct() {
                     value={isAddingNewCategory ? 'add_new_category' : formData.category} 
                     onChange={handleChange} 
                     required={!isAddingNewCategory} 
-                    className="w-full px-4 py-2.5 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent transition-all bg-white text-sm text-gray-700"
+                    className="w-full px-4 py-2.5 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 hover:border-indigo-300 transition-all bg-white text-sm text-gray-700 cursor-pointer shadow-sm"
                   >
-                    <option value="">Select category</option>
+                    <option value="" className="text-gray-500">Select category</option>
                     <option value="electronics">Electronics</option>
                     <option value="clothing">Clothing</option>
                     <option value="furniture">Furniture</option>
-                    <option value="add_new_category" className="font-semibold text-indigo-600">+ Add New Category</option>
+                    <option value="add_new_category" className="font-bold text-indigo-600 bg-indigo-50/50">+ Add New Category</option>
                   </select>
                   {isAddingNewCategory && (
-                    <div className="mt-3 flex items-center gap-2 animate-in fade-in slide-in-from-top-2">
+                    <div className="mt-3 flex items-center gap-2 animate-in fade-in slide-in-from-top-2 p-1.5 bg-indigo-50 rounded-lg border border-indigo-100">
                       <input 
                         type="text" 
                         value={newCategory} 
                         onChange={(e) => setNewCategory(e.target.value)} 
                         required 
                         autoFocus
-                        className="w-full px-4 py-2.5 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent transition-all text-sm" 
-                        placeholder="Enter new category name" 
+                        className="w-full px-3 py-2 bg-white border border-indigo-200 rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent transition-all text-sm shadow-sm" 
+                        placeholder="Type new category name..." 
                       />
                       <button 
                         type="button" 
                         onClick={() => { setIsAddingNewCategory(false); setNewCategory(''); }}
-                        className="p-2 text-gray-400 hover:text-red-500 bg-gray-50 rounded-lg hover:bg-red-50 transition-colors"
+                        className="p-2 text-indigo-400 hover:text-red-500 bg-white rounded-md hover:bg-red-50 border border-indigo-100 hover:border-red-200 transition-colors shadow-sm flex-shrink-0"
                         title="Cancel adding new category"
                       >
                         <X size={18} />
