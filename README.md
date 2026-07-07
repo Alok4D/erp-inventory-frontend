@@ -4,7 +4,6 @@ This is the frontend for the **Mini ERP – Inventory & Sales Management System*
 
 ## 🔗 Live Links
 - **Live Frontend**: https://smart-erp-dashboard.vercel.app
-- **Live Backend API**: *(Add your Render URL here)*
 - **Frontend GitHub**: https://github.com/Alok4D/erp-inventory-frontend
 - **Backend GitHub**: https://github.com/Alok4D/erp-inventory-backend
 
@@ -14,34 +13,51 @@ This is the frontend for the **Mini ERP – Inventory & Sales Management System*
 | Email | `admin@erp.com` |
 | Password | `password123` |
 
+## ✨ Features Implemented
+
+### 1. Dashboard & Analytics
+- Real-time statistics displaying **Total Products**, **Total Sales**, and **Total Revenue**.
+- **Low Stock Alerts**: Dedicated section showing products that are running out of stock (less than 5 items).
+- Dynamic skeleton loading states for a smooth user experience.
+
+### 2. Authentication & Authorization
+- **JWT-Based Login**: Secure login system with persistent sessions.
+- **Role-Based UI (RBAC)**: Interface elements (e.g., sidebar links, action buttons) are dynamically hidden or shown based on the user's specific permissions (Admin vs Manager vs Employee).
+
+### 3. Product Management
+- **Full CRUD**: Create, Read, Update, and Delete products.
+- **Advanced Data Table**: Displays products with Pagination and Real-time Search functionality.
+- **Stock Management**: Tracks Purchase Price, Selling Price, and current Stock Quantity.
+- **Image Support**: Displays product images seamlessly.
+
+### 4. Sales Management (Point of Sale)
+- **Interactive POS Interface**: Add multiple products to a cart before submitting a sale.
+- **Smart Search**: Search for products by name or SKU. If a search yields exactly one result, the system automatically selects it for faster checkout.
+- **Auto-Clear**: Automatically clears the search bar after adding an item to the cart.
+- **Real-Time Stock Validation**: Prevents users from adding more quantity to the cart than is currently available in stock.
+- **Sales History**: View past sales records with proper pagination.
+
+### 5. Role & Permission Management
+- **Dynamic Roles**: Create new roles (e.g., "Cashier", "Supervisor") directly from the UI.
+- **Granular Permissions**: Assign specific permissions (e.g., `view_products`, `create_sale`, `manage_roles`) to any role.
+
 ## 🛠️ Tech Stack
-| Technology | Purpose |
-|------------|---------|
-| React 18 | UI Framework |
-| TypeScript | Type-safe JavaScript |
-| Redux Toolkit & RTK Query | State management & API calls |
-| React Router v6 | Client-side routing |
-| Tailwind CSS | Utility-first styling |
-| Lucide React | Icon library |
-| SweetAlert2 | Beautiful alert modals |
-| Socket.io Client | Real-time updates |
-| Vite | Build tool |
+- **React 18** (UI Framework)
+- **TypeScript** (Type Safety)
+- **Redux Toolkit & RTK Query** (State Management & API Data Fetching)
+- **React Router v6** (Client-side Routing)
+- **Tailwind CSS** (Styling)
+- **Lucide React** (Icons)
+- **SweetAlert2** (Toast & Alert Modals)
+- **Vite** (Build Tool)
 
-## ✨ Features
-- **JWT Authentication**: Login, logout, token refresh with persistent sessions.
-- **Role-Based UI**: Dashboard components shown/hidden based on user role & permissions.
-- **Product Management**: Search, paginate, add, edit, delete products with image upload.
-- **Sales Management**: Multi-product cart, live stock checks, process & view sales history.
-- **Role & Permission Management**: Dynamic role creation and granular permission control.
-- **Dashboard**: Real-time stats — revenue, total products, low-stock alerts.
-- **Responsive Design**: Fully responsive layout for mobile and desktop.
-- **Skeleton Loading**: Smooth skeleton UI while data is being fetched.
+---
 
-## 📋 Prerequisites
+## 🚀 Project Setup & Installation Guide
+
+### Prerequisites
 - Node.js (v18 or higher)
 - npm or yarn
-
-## 🚀 Setup & Installation
 
 ### 1. Clone the repository
 ```bash
@@ -54,57 +70,44 @@ cd erp-inventory-frontend
 npm install
 ```
 
-### 3. Configure environment variables
-Create a `.env` file in the root directory:
+### 3. Configure Environment Variables
+Create a `.env` file in the root directory of the frontend project:
 ```env
 VITE_BASE_URL=http://localhost:5000/api/v1
 ```
-> For production, replace with your deployed backend URL.
+*(Note: If your backend is deployed, replace the URL with your live backend API link)*
 
 ### 4. Run the application
-
-**Development mode:**
+Start the development server:
 ```bash
 npm run dev
 ```
+The application will start on `http://localhost:5173`.
 
-The app will start on `http://localhost:5173`.
-
-**Production build:**
+### 5. Build for Production
+To create a production build:
 ```bash
 npm run build
 ```
+
+---
 
 ## 📁 Project Structure
 ```
 src/
 ├── app/                    # Redux store setup
-├── components/
+├── components/             # Shared components
 │   ├── layout/             # Navbar, Sidebar, DashboardLayout
-│   └── ui/                 # Reusable UI components (Skeleton, etc.)
-├── features/
-│   ├── auth/               # Login, Signup pages
-│   ├── dashboard/          # Dashboard page & widgets
-│   ├── products/           # Products page, table, modals
-│   ├── sales/              # Sales history & create sale
-│   └── roles/              # Roles page & modals
+│   └── ui/                 # Reusable UI elements (Skeleton, etc.)
+├── features/               # Feature-based modules
+│   ├── auth/               # Authentication pages
+│   ├── dashboard/          # Dashboard components
+│   ├── products/           # Product list, creation, editing
+│   ├── sales/              # Point of sale, sales history
+│   └── roles/              # Role management
 ├── layouts/                # Page layout wrappers
-├── redux/
-│   └── features/           # RTK Query API slices (auth, product, sale, role)
+├── redux/                  # State management
+│   └── features/           # RTK Query API slices
 ├── routes/                 # React Router configuration
 └── App.tsx                 # Root component
 ```
-
-## 🔐 Role & Permission System
-The app dynamically controls access based on the authenticated user's role and permissions fetched from the backend:
-
-| Permission | Description |
-|------------|-------------|
-| `view_products` | Can view product list |
-| `create_product` | Can add new products |
-| `update_product` | Can edit products |
-| `delete_product` | Can delete products |
-| `view_sales` | Can view sales history |
-| `create_sale` | Can create a new sale |
-| `delete_sale` | Can delete a sale |
-| `manage_roles` | Can manage roles & permissions |
