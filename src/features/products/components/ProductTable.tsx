@@ -1,5 +1,6 @@
 import { Package2, ChevronLeft, ChevronRight } from "lucide-react";
 import { Skeleton } from "../../../components/ui/skeleton";
+import { useNavigate } from "react-router-dom";
 
 interface ProductTableProps {
   products: any[];
@@ -9,7 +10,6 @@ interface ProductTableProps {
   page: number;
   setPage: React.Dispatch<React.SetStateAction<number>>;
   canManageProducts: boolean;
-  setEditingProduct: (product: any) => void;
   setProductToDelete: (id: string) => void;
   isDeleting: boolean;
 }
@@ -22,10 +22,11 @@ export function ProductTable({
   page,
   setPage,
   canManageProducts,
-  setEditingProduct,
   setProductToDelete,
   isDeleting,
 }: ProductTableProps) {
+  const navigate = useNavigate();
+
   if (isLoading) {
     return (
       <div className="space-y-4">
@@ -114,7 +115,7 @@ export function ProductTable({
                 {canManageProducts && (
                   <td className="py-3 px-4 text-center">
                     <button 
-                      onClick={() => setEditingProduct(product)}
+                      onClick={() => navigate(`/products/edit-product/${product._id}`, { state: { product } })}
                       className="text-blue-600 hover:underline mr-3 text-sm font-medium"
                     >
                       Edit

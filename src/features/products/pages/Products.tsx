@@ -2,14 +2,12 @@ import { useState, useEffect } from "react";
 import { Plus, Search } from "lucide-react";
 import { useGetProductsQuery, useDeleteProductMutation } from "../../../redux/features/product/productApi";
 import { useNavigate } from "react-router-dom";
-import { EditProductModal } from "../components/EditProductModal";
 import { DeleteProductModal } from "../components/DeleteProductModal";
 import { useAppSelector } from "../../../redux/hooks";
 import { ProductTable } from "../components/ProductTable";
 
 const Products = () => {
   const navigate = useNavigate();
-  const [editingProduct, setEditingProduct] = useState<any>(null);
   const [productToDelete, setProductToDelete] = useState<string | null>(null);
   
   const user = useAppSelector((state) => state.auth.user);
@@ -92,18 +90,10 @@ const Products = () => {
           page={page}
           setPage={setPage}
           canManageProducts={canManageProducts}
-          setEditingProduct={setEditingProduct}
           setProductToDelete={setProductToDelete}
           isDeleting={isDeleting}
         />
       </div>
-      
-      {editingProduct && (
-        <EditProductModal 
-          product={editingProduct} 
-          onClose={() => setEditingProduct(null)} 
-        />
-      )}
 
       {productToDelete && (
         <DeleteProductModal 
