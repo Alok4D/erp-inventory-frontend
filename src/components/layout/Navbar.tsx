@@ -1,5 +1,5 @@
 import { useState, useRef, useEffect } from "react";
-import { User, Menu, Bell, Check, BellRing } from "lucide-react";
+import { Menu, Bell, Check, BellRing } from "lucide-react";
 import { useAppSelector } from "../../redux/hooks";
 
 interface NavbarProps {
@@ -10,7 +10,7 @@ interface NavbarProps {
   setNotifications: React.Dispatch<React.SetStateAction<any[]>>;
 }
 
-export function Navbar({ isCollapsed, toggleSidebar, toggleMobileSidebar, notifications, setNotifications }: NavbarProps) {
+export function Navbar({ toggleSidebar, toggleMobileSidebar, notifications, setNotifications }: NavbarProps) {
   const user = useAppSelector((state) => state.auth.user);
   const [showNotifications, setShowNotifications] = useState(false);
   const dropdownRef = useRef<HTMLDivElement>(null);
