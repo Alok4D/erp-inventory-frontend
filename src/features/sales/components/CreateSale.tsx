@@ -3,6 +3,7 @@ import { Plus, Trash2, ShoppingCart, Loader2 } from "lucide-react";
 import { useGetProductsQuery } from "../../../redux/features/product/productApi";
 import { useCreateSaleMutation } from "../../../redux/features/sale/saleApi";
 import { Skeleton } from "../../../components/ui/skeleton";
+import Swal from "sweetalert2";
 
 export function CreateSale() {
   
@@ -14,12 +15,8 @@ export function CreateSale() {
   const [cart, setCart] = useState<{ id: number; product: any; quantity: number }[]>([]);
   const [selectedProductId, setSelectedProductId] = useState("");
   const [quantity, setQuantity] = useState<number>(1);
-  const [error, setError] = useState("");
-  const [success, setSuccess] = useState("");
 
   const handleAddToCart = () => {
-    setError("");
-    setSuccess("");
     if (!selectedProductId || quantity <= 0) return;
     
     const product = products.find((p: any) => p._id === selectedProductId);
@@ -30,7 +27,13 @@ export function CreateSale() {
     const currentCartQty = existingIndex >= 0 ? cart[existingIndex].quantity : 0;
     
     if (currentCartQty + quantity > product.stockQuantity) {
-      setError(`Cannot add ${quantity} more. Only ${product.stockQuantity - currentCartQty} left in stock.`);
+      Swal.fire({
+        position: 'top-end',
+        icon: 'warning',
+        title: `Cannot add ${quantity} more. Only ${product.stockQuantity - currentCartQty} left in stock.`,
+        showConfirmButton: false,
+        timer: 2000
+      });
       return;
     }
 
@@ -54,8 +57,6 @@ export function CreateSale() {
 
   const handleSubmitSale = async () => {
     if (cart.length === 0) return;
-    setError("");
-    setSuccess("");
 
     try {
       const saleData = {
@@ -67,27 +68,27 @@ export function CreateSale() {
 
       await createSale(saleData).unwrap();
       setCart([]);
-      setSuccess("Sale completed successfully!");
+      Swal.fire({
+        position: 'top-end',
+        icon: 'success',
+        title: 'Sale completed successfully!',
+        showConfirmButton: false,
+        timer: 1500
+      });
     } catch (err: any) {
       console.error("Failed to create sale:", err);
-      setError(err.data?.message || "Failed to create sale. Please try again.");
+      Swal.fire({
+        position: 'top-end',
+        icon: 'error',
+        title: err.data?.message || "Failed to create sale. Please try again.",
+        showConfirmButton: false,
+        timer: 1500
+      });
     }
   };
 
   return (
     <div className="space-y-6 animate-in fade-in slide-in-from-bottom-2 duration-300">
-      {error && (
-        <div className="bg-red-50 text-red-600 p-4 rounded-md border border-red-200">
-          {error}
-        </div>
-      )}
-      
-      {success && (
-        <div className="bg-green-50 text-green-600 p-4 rounded-md border border-green-200">
-          {success}
-        </div>
-      )}
-
       <div className="bg-white rounded-lg shadow-sm border border-gray-100 overflow-hidden">
         <div className="p-6 bg-gray-50/50 border-b border-gray-100">
           <h2 className="text-lg font-medium mb-4 flex items-center">
