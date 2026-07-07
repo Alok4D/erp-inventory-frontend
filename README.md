@@ -1,70 +1,110 @@
-# Mini ERP - Frontend Interface
+# Mini ERP — Frontend
 
-This is the frontend client for the **Mini ERP – Inventory & Sales Management System**. It provides a beautiful, responsive, and intuitive user interface built with modern web technologies.
+This is the frontend for the **Mini ERP – Inventory & Sales Management System**, built with React, TypeScript, and Redux Toolkit.
 
-## Tech Stack
-- **React 19 & Vite**: Fast and modern UI development.
-- **TypeScript**: Typed language for better developer experience and code safety.
-- **Tailwind CSS 4**: Utility-first CSS framework for rapid and responsive styling.
-- **Redux Toolkit & RTK Query**: State management and efficient data fetching/caching.
-- **Lucide React**: Beautiful and consistent iconography.
-- **React Router DOM**: Client-side routing.
-- **Redux Persist**: Persisting auth state across browser reloads.
+## 🔗 Live Links
+- **Live Frontend**: https://smart-erp-dashboard.vercel.app
+- **Live Backend API**: *(Add your Render URL here)*
+- **Frontend GitHub**: https://github.com/Alok4D/erp-inventory-frontend
+- **Backend GitHub**: https://github.com/Alok4D/erp-inventory-backend
 
-## Key Features
-- **Secure Authentication**: JWT-based login with persistent sessions.
-- **Interactive Dashboard**: View key metrics (Total Products, Total Sales) and Low Stock warnings at a glance.
-- **Product Management (CRUD)**:
-  - Add new products with image uploads.
-  - View products in a responsive data table.
-  - Edit existing products dynamically.
-  - Delete products with safety confirmations.
-  - Smart Search with Debounce.
-  - Server-side Pagination.
-- **Sales Creation**:
-  - Add multiple products to a shopping cart.
-  - Real-time stock validation (prevents selling more than what's available).
-  - Automatic calculation of subtotal and grand totals.
-- **Dynamic Role & Permission Management**: 
-  - Complete UI to create roles and assign specific permissions.
-  - Dynamic sidebar and route protection based on user permissions.
-- **Real-Time Notifications (Socket.io)**: 
-  - Instant dashboard data refresh and push notifications when a new sale is created by any user.
-- **Responsive Design**: Fully optimized for mobile, tablet, and desktop viewing with an interactive sidebar and dropdowns.
+## 🔑 Admin Login Credentials
+| Field | Value |
+|-------|-------|
+| Email | `admin@erp.com` |
+| Password | `password123` |
 
-## Prerequisites
+## 🛠️ Tech Stack
+| Technology | Purpose |
+|------------|---------|
+| React 18 | UI Framework |
+| TypeScript | Type-safe JavaScript |
+| Redux Toolkit & RTK Query | State management & API calls |
+| React Router v6 | Client-side routing |
+| Tailwind CSS | Utility-first styling |
+| Lucide React | Icon library |
+| SweetAlert2 | Beautiful alert modals |
+| Socket.io Client | Real-time updates |
+| Vite | Build tool |
+
+## ✨ Features
+- **JWT Authentication**: Login, logout, token refresh with persistent sessions.
+- **Role-Based UI**: Dashboard components shown/hidden based on user role & permissions.
+- **Product Management**: Search, paginate, add, edit, delete products with image upload.
+- **Sales Management**: Multi-product cart, live stock checks, process & view sales history.
+- **Role & Permission Management**: Dynamic role creation and granular permission control.
+- **Dashboard**: Real-time stats — revenue, total products, low-stock alerts.
+- **Responsive Design**: Fully responsive layout for mobile and desktop.
+- **Skeleton Loading**: Smooth skeleton UI while data is being fetched.
+
+## 📋 Prerequisites
 - Node.js (v18 or higher)
-- Backend API running locally or deployed.
+- npm or yarn
 
-## Setup & Installation
+## 🚀 Setup & Installation
 
-1. **Clone the repository and navigate to the frontend folder**:
-   ```bash
-   git clone <repository-url>
-   cd erp-inventory-frontend
-   ```
+### 1. Clone the repository
+```bash
+git clone https://github.com/Alok4D/erp-inventory-frontend.git
+cd erp-inventory-frontend
+```
 
-2. **Install dependencies**:
-   ```bash
-   npm install
-   ```
+### 2. Install dependencies
+```bash
+npm install
+```
 
-3. **Environment Configuration**:
-   The frontend communicates with the backend via API endpoints. By default, it uses `http://localhost:5000/api/v1`. If your backend is hosted elsewhere, update the `baseUrl` in `src/redux/api/baseApi.ts`.
+### 3. Configure environment variables
+Create a `.env` file in the root directory:
+```env
+VITE_BASE_URL=http://localhost:5000/api/v1
+```
+> For production, replace with your deployed backend URL.
 
-4. **Run the application**:
-   - For development:
-     ```bash
-     npm run dev
-     ```
-     The app will be available at `http://localhost:5173`.
-   - For production build:
-     ```bash
-     npm run build
-     npm run preview
-     ```
+### 4. Run the application
 
-## Admin Login Credentials
-To log into the system and explore its features, you can use the following default admin credentials:
-- **Email**: `admin@erp.com`
-- **Password**: `password123`
+**Development mode:**
+```bash
+npm run dev
+```
+
+The app will start on `http://localhost:5173`.
+
+**Production build:**
+```bash
+npm run build
+```
+
+## 📁 Project Structure
+```
+src/
+├── app/                    # Redux store setup
+├── components/
+│   ├── layout/             # Navbar, Sidebar, DashboardLayout
+│   └── ui/                 # Reusable UI components (Skeleton, etc.)
+├── features/
+│   ├── auth/               # Login, Signup pages
+│   ├── dashboard/          # Dashboard page & widgets
+│   ├── products/           # Products page, table, modals
+│   ├── sales/              # Sales history & create sale
+│   └── roles/              # Roles page & modals
+├── layouts/                # Page layout wrappers
+├── redux/
+│   └── features/           # RTK Query API slices (auth, product, sale, role)
+├── routes/                 # React Router configuration
+└── App.tsx                 # Root component
+```
+
+## 🔐 Role & Permission System
+The app dynamically controls access based on the authenticated user's role and permissions fetched from the backend:
+
+| Permission | Description |
+|------------|-------------|
+| `view_products` | Can view product list |
+| `create_product` | Can add new products |
+| `update_product` | Can edit products |
+| `delete_product` | Can delete products |
+| `view_sales` | Can view sales history |
+| `create_sale` | Can create a new sale |
+| `delete_sale` | Can delete a sale |
+| `manage_roles` | Can manage roles & permissions |
