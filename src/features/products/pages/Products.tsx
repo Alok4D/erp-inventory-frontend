@@ -8,7 +8,7 @@ import { useAppSelector } from "../../../redux/hooks";
 import { ProductTable } from "../components/ProductTable";
 
 const Products = () => {
-
+  
   const [isAddModalOpen, setIsAddModalOpen] = useState(false);
   const [editingProduct, setEditingProduct] = useState<any>(null);
   const [productToDelete, setProductToDelete] = useState<string | null>(null);
@@ -25,16 +25,15 @@ const Products = () => {
   useEffect(() => {
     const timer = setTimeout(() => {
       setDebouncedSearch(searchTerm);
-      setPage(1);
+      setPage(1); // Reset to page 1 on new search
     }, 500);
     return () => clearTimeout(timer);
   }, [searchTerm]);
 
-  const { data, isLoading, error } = useGetProductsQuery({ 
-    searchTerm: debouncedSearch, 
-    page, 
-    limit 
-  });
+  const queryArgs: any = { page, limit };
+  if (debouncedSearch) queryArgs.searchTerm = debouncedSearch;
+
+  const { data, isLoading, error } = useGetProductsQuery(queryArgs);
   
   const [deleteProduct, { isLoading: isDeleting }] = useDeleteProductMutation();
 
