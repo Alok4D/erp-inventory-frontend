@@ -2,6 +2,10 @@ import { useState, useEffect } from "react";
 import { Outlet, useLocation } from "react-router-dom";
 import { Sidebar } from "../components/layout/Sidebar";
 import { Navbar } from "../components/layout/Navbar";
+import { io } from "socket.io-client";
+import { toast } from "sonner";
+import { useAppDispatch } from "../redux/hooks";
+import { baseApi } from "../redux/api/baseApi";
 
 export default function DashboardLayout() {
  
@@ -13,6 +17,27 @@ export default function DashboardLayout() {
   });
   const [isMobileOpen, setIsMobileOpen] = useState(false);
   const location = useLocation();
+  const dispatch = useAppDispatch();
+
+  // Socket.io integration for real-time sale notifications
+  useEffect(() => {
+    const socket = io("http://localhost:5000"); // Ensure this matches your backend URL
+
+    socket.on("connect", () => {
+      console.log("Connected to socket server");
+    });
+
+    socket.on("new_sale", (data) => {
+      toast.success(data.message || "New sale created!");
+      
+      // Automatically refresh Dashboard, Sales, and Products by invalidating RTK Query tags
+      dispatch(baseApi.util.invalidateTags(["Sales", "Dashboard", "Products"]));
+    });
+
+    return () => {
+      socket.disconnect();
+    };
+  }, [dispatch]);
 
   // Close mobile sidebar when route changes
   useEffect(() => {
