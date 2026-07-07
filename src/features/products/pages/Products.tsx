@@ -8,6 +8,7 @@ import { useAppSelector } from "../../../redux/hooks";
 import { ProductTable } from "../components/ProductTable";
 
 const Products = () => {
+  
   const [isAddModalOpen, setIsAddModalOpen] = useState(false);
   const [editingProduct, setEditingProduct] = useState<any>(null);
   const [productToDelete, setProductToDelete] = useState<string | null>(null);
