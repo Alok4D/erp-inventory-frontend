@@ -1,30 +1,29 @@
 import { useGetSalesQuery, useDeleteSaleMutation } from "../../../redux/features/sale/saleApi";
 import { Skeleton } from "../../../components/ui/skeleton";
-import { History, Trash2, Loader2 } from "lucide-react";
+import { History, Trash2 } from "lucide-react";
 import { useAppSelector } from "../../../redux/hooks";
 import { useState } from "react";
+import { DeleteSaleModal } from "./DeleteSaleModal";
 
 export function SalesHistory() {
   const { data: salesData, isLoading: isLoadingSales } = useGetSalesQuery(undefined);
-  const [deleteSale] = useDeleteSaleMutation();
+  const [deleteSale, { isLoading: isDeletingSale }] = useDeleteSaleMutation();
   const sales = salesData?.data || [];
   
   const user = useAppSelector((state) => state.auth.user);
   const isAdmin = user?.role === 'admin';
   
-  const [deletingId, setDeletingId] = useState<string | null>(null);
+  const [saleToDelete, setSaleToDelete] = useState<string | null>(null);
 
-  const handleDelete = async (id: string) => {
-    if (!window.confirm("Are you sure you want to delete this sale? The products will be returned to stock.")) return;
+  const handleDeleteConfirm = async () => {
+    if (!saleToDelete) return;
     
-    setDeletingId(id);
     try {
-      await deleteSale(id).unwrap();
+      await deleteSale(saleToDelete).unwrap();
+      setSaleToDelete(null);
     } catch (err) {
       console.error("Failed to delete sale:", err);
       alert("Failed to delete sale");
-    } finally {
-      setDeletingId(null);
     }
   };
 
@@ -94,16 +93,12 @@ export function SalesHistory() {
                   {isAdmin && (
                     <td className="py-4 px-6 text-center">
                       <button
-                        onClick={() => handleDelete(sale._id)}
-                        disabled={deletingId === sale._id}
+                        onClick={() => setSaleToDelete(sale._id)}
+                        disabled={isDeletingSale}
                         className="text-red-500 hover:text-red-700 hover:bg-red-50 p-2 rounded-full transition-colors disabled:opacity-50"
                         title="Delete Sale"
                       >
-                        {deletingId === sale._id ? (
-                          <Loader2 className="w-4 h-4 animate-spin" />
-                        ) : (
-                          <Trash2 className="w-4 h-4" />
-                        )}
+                        <Trash2 className="w-4 h-4" />
                       </button>
                     </td>
                   )}
@@ -112,6 +107,14 @@ export function SalesHistory() {
             </tbody>
           </table>
         </div>
+      )}
+
+      {saleToDelete && (
+        <DeleteSaleModal
+          isLoading={isDeletingSale}
+          onClose={() => setSaleToDelete(null)}
+          onConfirm={handleDeleteConfirm}
+        />
       )}
     </div>
   );
