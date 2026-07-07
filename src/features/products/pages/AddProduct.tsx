@@ -87,9 +87,19 @@ export default function AddProduct() {
 
   return (
     <div className="max-w-full mx-auto p-4 sm:p-6 lg:p-8 animate-in fade-in duration-500 bg-gray-50/50 min-h-screen">
-      <div className="mb-6">
-        <h1 className="text-2xl font-bold text-gray-900">Add New Product</h1>
-        <p className="text-sm text-gray-500 mt-1">Create a new product in your catalog</p>
+      <div className="mb-6 flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
+        <div>
+          <h1 className="text-2xl font-bold text-gray-900">Add New Product</h1>
+          <p className="text-sm text-gray-500 mt-1">Create a new product in your catalog</p>
+        </div>
+        <button 
+          type="button"
+          onClick={() => navigate('/products')}
+          className="flex items-center text-sm font-medium text-gray-600 hover:text-indigo-600 bg-white px-4 py-2 border border-gray-200 rounded-lg shadow-sm transition-colors"
+        >
+          <ArrowLeft className="w-4 h-4 mr-2" />
+          Back to Products
+        </button>
       </div>
       
       <form onSubmit={handleSubmit} className="flex flex-col lg:flex-row gap-6">
