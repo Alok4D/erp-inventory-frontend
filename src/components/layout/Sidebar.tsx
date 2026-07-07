@@ -105,8 +105,8 @@ export function Sidebar({ isCollapsed, isMobileOpen, setIsMobileOpen }: SidebarP
             "flex items-center mb-4",
             (!isMobileOpen && isCollapsed) ? "justify-center" : "px-2"
           )}>
-            <div className="w-10 h-10 rounded-full bg-gray-800 border border-gray-700 flex items-center justify-center shrink-0">
-              <User className="w-5 h-5 text-gray-400" />
+            <div className="w-10 h-10 rounded-full bg-gray-800 border border-gray-700 flex items-center justify-center shrink-0 overflow-hidden">
+              <img src="https://img.freepik.com/free-vector/blue-circle-with-white-user_78370-4707.jpg?semt=ais_hybrid&w=740&q=80" alt="Profile" className="w-full h-full object-cover bg-gray-800" />
             </div>
             {(!isCollapsed || isMobileOpen) && (
               <div className="ml-3 overflow-hidden">

@@ -127,8 +127,8 @@ export function Navbar({ isCollapsed, toggleSidebar, toggleMobileSidebar, notifi
               {user?.role || "User"}
             </span>
           </div>
-          <div className="w-9 h-9 rounded-full border border-gray-200 flex items-center justify-center bg-gray-50">
-            <User className="w-5 h-5 text-gray-600" />
+          <div className="w-9 h-9 rounded-full border border-gray-200 flex items-center justify-center bg-gray-50 overflow-hidden">
+            <img src="https://img.freepik.com/free-vector/blue-circle-with-white-user_78370-4707.jpg?semt=ais_hybrid&w=740&q=80" alt="Profile" className="w-full h-full object-cover bg-indigo-50" />
           </div>
         </div>
       </div>
