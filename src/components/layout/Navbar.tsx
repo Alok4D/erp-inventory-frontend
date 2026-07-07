@@ -29,9 +29,14 @@ export function Navbar({ isCollapsed, toggleSidebar, toggleMobileSidebar }: Navb
           <Menu className="w-5 h-5" />
         </button>
         
-        <h2 className="text-xl font-semibold text-gray-800 hidden sm:block">
-          Dashboard Overview
-        </h2>
+        <div className="hidden sm:flex items-center gap-2">
+          <div className="flex items-center gap-2">
+          
+            <h2 className="text-xl font-semibold text-gray-900 tracking-tight">
+              Welcome to Mini ERP
+            </h2>
+          </div>
+        </div>
       </div>
       
       <div className="flex items-center space-x-4">
