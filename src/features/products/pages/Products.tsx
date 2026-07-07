@@ -5,12 +5,16 @@ import { Skeleton } from "../../../components/ui/skeleton";
 import { AddProductModal } from "../components/AddProductModal";
 import { EditProductModal } from "../components/EditProductModal";
 import { DeleteProductModal } from "../components/DeleteProductModal";
+import { useAppSelector } from "../../../redux/hooks";
 
 export default function Products() {
   const [isAddModalOpen, setIsAddModalOpen] = useState(false);
   const [editingProduct, setEditingProduct] = useState<any>(null);
   const [productToDelete, setProductToDelete] = useState<string | null>(null);
   
+  const user = useAppSelector((state) => state.auth.user);
+  const canManageProducts = user?.role === 'admin' || user?.role === 'manager';
+
   const [searchTerm, setSearchTerm] = useState("");
   const [debouncedSearch, setDebouncedSearch] = useState("");
   const [page, setPage] = useState(1);
@@ -56,13 +60,15 @@ export default function Products() {
     <div>
       <div className="flex justify-between items-center mb-6">
         <h1 className="text-2xl font-semibold">Products</h1>
-        <button 
-          onClick={() => setIsAddModalOpen(true)}
-          className="flex items-center bg-gray-900 text-white px-4 py-2 rounded-md hover:bg-gray-800 transition-colors"
-        >
-          <Plus className="w-4 h-4 mr-2" />
-          Add Product
-        </button>
+        {canManageProducts && (
+          <button 
+            onClick={() => setIsAddModalOpen(true)}
+            className="flex items-center bg-gray-900 text-white px-4 py-2 rounded-md hover:bg-gray-800 transition-colors"
+          >
+            <Plus className="w-4 h-4 mr-2" />
+            Add Product
+          </button>
+        )}
       </div>
 
       <div className="bg-white rounded-lg shadow-sm border border-gray-100 p-6">
@@ -124,7 +130,7 @@ export default function Products() {
                     <th className="py-3 px-4 font-medium text-gray-600">Category</th>
                     <th className="py-3 px-4 font-medium text-gray-600">Selling Price</th>
                     <th className="py-3 px-4 font-medium text-gray-600">Stock</th>
-                    <th className="py-3 px-4 font-medium text-gray-600 text-center">Actions</th>
+                    {canManageProducts && <th className="py-3 px-4 font-medium text-gray-600 text-center">Actions</th>}
                   </tr>
                 </thead>
                 <tbody>
@@ -154,21 +160,23 @@ export default function Products() {
                           {product.stockQuantity} in stock
                         </span>
                       </td>
-                      <td className="py-3 px-4 text-center">
-                        <button 
-                          onClick={() => setEditingProduct(product)}
-                          className="text-blue-600 hover:underline mr-3 text-sm font-medium"
-                        >
-                          Edit
-                        </button>
-                        <button 
-                          onClick={() => setProductToDelete(product._id)}
-                          disabled={isDeleting}
-                          className="text-red-600 hover:underline text-sm font-medium disabled:opacity-50"
-                        >
-                          Delete
-                        </button>
-                      </td>
+                      {canManageProducts && (
+                        <td className="py-3 px-4 text-center">
+                          <button 
+                            onClick={() => setEditingProduct(product)}
+                            className="text-blue-600 hover:underline mr-3 text-sm font-medium"
+                          >
+                            Edit
+                          </button>
+                          <button 
+                            onClick={() => setProductToDelete(product._id)}
+                            disabled={isDeleting}
+                            className="text-red-600 hover:underline text-sm font-medium disabled:opacity-50"
+                          >
+                            Delete
+                          </button>
+                        </td>
+                      )}
                     </tr>
                   ))}
                 </tbody>
