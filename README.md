@@ -10,8 +10,8 @@ This is the frontend for the **Mini ERP – Inventory & Sales Management System*
 ## 🔑 Admin Login Credentials
 | Field | Value |
 |-------|-------|
-| Email | `admin@erp.com` |
-| Password | `password123` |
+| Email | `admin@gmail.com` |
+| Password | `123456` |
 
 ## ✨ Features Implemented
 
