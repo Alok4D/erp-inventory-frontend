@@ -120,7 +120,7 @@ export function Sidebar({ isCollapsed, isMobileOpen, setIsMobileOpen }: SidebarP
             onClick={handleLogout}
             title={(!isMobileOpen && isCollapsed) ? "Logout" : undefined}
             className={clsx(
-              "flex items-center text-gray-400 rounded-lg border border-gray-800 hover:bg-gray-800 hover:text-white hover:border-gray-700 transition-colors w-full",
+              "flex items-center text-gray-400 rounded-none border border-gray-800 hover:bg-gray-800 hover:text-white hover:border-gray-700 transition-colors w-full",
               (!isMobileOpen && isCollapsed) ? "justify-center p-3" : "justify-center px-4 py-2.5"
             )}
           >
