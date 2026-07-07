@@ -4,6 +4,7 @@ import Swal from 'sweetalert2';
 import { useGetAllRolesQuery, useDeleteRoleMutation } from '../../../redux/features/role/roleApi';
 import { RoleModal } from '../components/RoleModal';
 import { useAppSelector } from '../../../redux/hooks';
+import { Skeleton } from '../../../components/ui/skeleton';
 
 export default function Roles() {
   const { data: rolesResponse, isLoading } = useGetAllRolesQuery({});
@@ -105,8 +106,36 @@ export default function Roles() {
       </div>
 
       {isLoading ? (
-        <div className="flex justify-center py-8">
-          <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-indigo-600"></div>
+        <div className="bg-white rounded-none shadow-sm border border-gray-100 overflow-hidden">
+          <div className="overflow-x-auto">
+            <table className="w-full text-left border-collapse">
+              <thead>
+                <tr className="bg-gray-50 border-b border-gray-100">
+                  <th className="px-6 py-4"><Skeleton className="h-4 w-24" /></th>
+                  <th className="px-6 py-4"><Skeleton className="h-4 w-32" /></th>
+                  <th className="px-6 py-4 flex justify-end"><Skeleton className="h-4 w-16" /></th>
+                </tr>
+              </thead>
+              <tbody className="divide-y divide-gray-100">
+                {[...Array(5)].map((_, i) => (
+                  <tr key={i}>
+                    <td className="px-6 py-4"><Skeleton className="h-6 w-24" /></td>
+                    <td className="px-6 py-4">
+                      <div className="flex gap-2">
+                        <Skeleton className="h-6 w-20" />
+                        <Skeleton className="h-6 w-24" />
+                        <Skeleton className="h-6 w-16" />
+                      </div>
+                    </td>
+                    <td className="px-6 py-4 flex justify-end gap-3">
+                      <Skeleton className="h-5 w-5" />
+                      <Skeleton className="h-5 w-5" />
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
         </div>
       ) : (
         <div className="bg-white rounded-none shadow-sm border border-gray-100 overflow-hidden">
@@ -114,20 +143,20 @@ export default function Roles() {
             <table className="w-full text-left border-collapse">
               <thead>
                 <tr className="bg-gray-50 border-b border-gray-100">
-                  <th className="px-6 py-4 text-sm font-semibold text-gray-900">Role Name</th>
-                  <th className="px-6 py-4 text-sm font-semibold text-gray-900">Permissions</th>
-                  <th className="px-6 py-4 text-sm font-semibold text-gray-900 text-right">Actions</th>
+                  <th className="px-6 py-4 text-sm font-semibold text-gray-900 whitespace-nowrap md:whitespace-normal">Role Name</th>
+                  <th className="px-6 py-4 text-sm font-semibold text-gray-900 min-w-[280px]">Permissions</th>
+                  <th className="px-6 py-4 text-sm font-semibold text-gray-900 text-right whitespace-nowrap md:whitespace-normal">Actions</th>
                 </tr>
               </thead>
               <tbody className="divide-y divide-gray-100">
                 {roles.map((role: any) => (
                   <tr key={role._id} className="hover:bg-gray-50 transition-colors">
-                    <td className="px-6 py-4">
+                    <td className="px-6 py-4 whitespace-nowrap md:whitespace-normal">
                       <span className="inline-flex items-center px-3 py-1 rounded-none text-sm font-medium bg-indigo-100 text-indigo-800 capitalize">
                         {role.name}
                       </span>
                     </td>
-                    <td className="px-6 py-4">
+                    <td className="px-6 py-4 min-w-[280px]">
                       <div className="flex flex-wrap gap-2">
                         {role.permissions.map((perm: string) => (
                           <span key={perm} className="inline-flex items-center px-2.5 py-1 rounded-none text-sm font-medium bg-gray-100 text-gray-800 border border-gray-200">
@@ -137,7 +166,7 @@ export default function Roles() {
                         {role.permissions.length === 0 && <span className="text-gray-400 text-sm italic">No permissions</span>}
                       </div>
                     </td>
-                    <td className="px-6 py-4 text-right space-x-3">
+                    <td className="px-6 py-4 text-right space-x-3 whitespace-nowrap md:whitespace-normal">
                       {role.name.toLowerCase() !== 'admin' && (
                         <button
                           onClick={() => handleEdit(role)}
