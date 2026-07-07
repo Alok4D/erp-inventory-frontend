@@ -112,7 +112,7 @@ export default function Signup() {
 
             <button 
               type="submit" 
-              disabled={isLoading || successMsg !== ''}
+              disabled={isLoading}
               className="w-full flex justify-center py-3 px-4 border border-transparent rounded-lg shadow-sm text-sm font-semibold text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 disabled:bg-indigo-300 disabled:cursor-not-allowed transition-colors mt-2"
             >
               {isLoading ? 'Creating account...' : 'Sign Up'}
