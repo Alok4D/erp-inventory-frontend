@@ -1,5 +1,5 @@
 import { Link, useLocation, useNavigate } from "react-router-dom";
-import { LayoutDashboard, Package, ShoppingCart, LogOut, Hexagon, X } from "lucide-react";
+import { LayoutDashboard, Package, ShoppingCart, LogOut, Hexagon, X, User } from "lucide-react";
 import clsx from "clsx";
 import { useAppDispatch, useAppSelector } from "@/redux/hooks";
 import { useLogoutMutation } from "@/redux/features/auth/authApi";
@@ -90,16 +90,31 @@ export function Sidebar({ isCollapsed, isMobileOpen, setIsMobileOpen }: SidebarP
         </div>
         
         <div className="p-3 border-t border-gray-800">
+          <div className={clsx(
+            "flex items-center mb-4",
+            (!isMobileOpen && isCollapsed) ? "justify-center" : "px-2"
+          )}>
+            <div className="w-10 h-10 rounded-full bg-gray-800 border border-gray-700 flex items-center justify-center shrink-0">
+              <User className="w-5 h-5 text-gray-400" />
+            </div>
+            {(!isCollapsed || isMobileOpen) && (
+              <div className="ml-3 overflow-hidden">
+                <p className="text-sm font-medium text-white truncate">{user?.name || "Loading..."}</p>
+                <p className="text-xs text-gray-400 capitalize truncate">{user?.role || "User"}</p>
+              </div>
+            )}
+          </div>
+
           <button 
             onClick={handleLogout}
             title={(!isMobileOpen && isCollapsed) ? "Logout" : undefined}
             className={clsx(
-              "flex items-center text-gray-400 rounded-lg hover:bg-gray-800 hover:text-white transition-colors w-full",
-              (!isMobileOpen && isCollapsed) ? "justify-center p-3" : "px-4 py-3"
+              "flex items-center text-gray-400 rounded-lg border border-gray-800 hover:bg-gray-800 hover:text-white hover:border-gray-700 transition-colors w-full",
+              (!isMobileOpen && isCollapsed) ? "justify-center p-3" : "justify-center px-4 py-2.5"
             )}
           >
             <LogOut className="w-5 h-5 shrink-0" />
-            {(!isCollapsed || isMobileOpen) && <span className="ml-3 truncate">Logout</span>}
+            {(!isCollapsed || isMobileOpen) && <span className="ml-2 font-medium truncate">Log out</span>}
           </button>
         </div>
       </div>
