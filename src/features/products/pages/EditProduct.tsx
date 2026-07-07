@@ -128,7 +128,7 @@ export default function EditProduct() {
                     value={isAddingNewCategory ? 'add_new_category' : formData.category} 
                     onChange={handleChange} 
                     required={!isAddingNewCategory} 
-                    className="w-full px-4 py-2.5 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 hover:border-indigo-300 transition-all bg-white text-sm text-gray-700 cursor-pointer shadow-sm"
+                    className="w-full px-4 py-2.5 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent transition-all text-sm text-gray-700 cursor-pointer"
                   >
                     <option value="" className="text-gray-500">Select category</option>
                     <option value="electronics">Electronics</option>
