@@ -1,15 +1,14 @@
 import { useState, useEffect } from "react";
 import { Plus, Search } from "lucide-react";
 import { useGetProductsQuery, useDeleteProductMutation } from "../../../redux/features/product/productApi";
-import { AddProductModal } from "../components/AddProductModal";
+import { useNavigate } from "react-router-dom";
 import { EditProductModal } from "../components/EditProductModal";
 import { DeleteProductModal } from "../components/DeleteProductModal";
 import { useAppSelector } from "../../../redux/hooks";
 import { ProductTable } from "../components/ProductTable";
 
 const Products = () => {
-  
-  const [isAddModalOpen, setIsAddModalOpen] = useState(false);
+  const navigate = useNavigate();
   const [editingProduct, setEditingProduct] = useState<any>(null);
   const [productToDelete, setProductToDelete] = useState<string | null>(null);
   
@@ -61,9 +60,9 @@ const Products = () => {
       <div className="flex justify-between items-center mb-6">
         <h1 className="text-2xl font-semibold">Products</h1>
         {canManageProducts && (
-          <button 
-            onClick={() => setIsAddModalOpen(true)}
-            className="flex items-center bg-gray-900 text-white px-4 py-2 rounded-md hover:bg-gray-800 transition-colors"
+          <button
+            onClick={() => navigate('/products/add-product')}
+            className="flex items-center px-4 py-2 bg-gray-900 text-white rounded-lg hover:bg-gray-800 transition-colors shadow-sm"
           >
             <Plus className="w-4 h-4 mr-2" />
             Add Product
@@ -98,8 +97,6 @@ const Products = () => {
           isDeleting={isDeleting}
         />
       </div>
-
-      {isAddModalOpen && <AddProductModal onClose={() => setIsAddModalOpen(false)} />}
       
       {editingProduct && (
         <EditProductModal 
