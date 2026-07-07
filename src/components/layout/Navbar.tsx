@@ -65,7 +65,7 @@ export function Navbar({ isCollapsed, toggleSidebar, toggleMobileSidebar, notifi
         <div className="relative" ref={dropdownRef}>
           <button 
             onClick={() => setShowNotifications(!showNotifications)}
-            className={`relative p-2 rounded-lg transition-colors focus:outline-none ${showNotifications ? 'bg-indigo-50 text-indigo-600' : 'text-gray-400 hover:text-gray-600 hover:bg-gray-100'}`}
+            className={`relative p-2 rounded-none transition-colors focus:outline-none ${showNotifications ? 'bg-indigo-50 text-indigo-600' : 'text-gray-400 hover:text-gray-600 hover:bg-gray-100'}`}
           >
             <Bell className="w-5 h-5" />
             {unreadCount > 0 && (
@@ -74,7 +74,7 @@ export function Navbar({ isCollapsed, toggleSidebar, toggleMobileSidebar, notifi
           </button>
 
           {showNotifications && (
-            <div className="absolute right-0 mt-2 w-80 bg-white rounded-lg shadow-lg border border-gray-100 overflow-hidden z-50">
+            <div className="absolute right-0 mt-2 w-80 bg-white rounded-none shadow-sm border border-gray-100 overflow-hidden z-50">
               <div className="p-4 border-b border-gray-100 flex justify-between items-center bg-gray-50/50">
                 <h3 className="font-semibold text-gray-900 flex items-center">
                   <BellRing className="w-4 h-4 mr-2 text-indigo-600" />
