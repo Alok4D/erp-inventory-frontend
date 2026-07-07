@@ -1,6 +1,6 @@
 import { useGetSalesQuery, useDeleteSaleMutation } from "../../../redux/features/sale/saleApi";
 import { Skeleton } from "../../../components/ui/skeleton";
-import { History, Trash2 } from "lucide-react";
+import { History, Trash2, ChevronLeft, ChevronRight } from "lucide-react";
 import { useAppSelector } from "../../../redux/hooks";
 import { useState } from "react";
 import { DeleteSaleModal } from "./DeleteSaleModal";
@@ -29,6 +29,24 @@ export function SalesHistory() {
       console.error("Failed to delete sale:", err);
       alert("Failed to delete sale");
     }
+  };
+
+  const getPageNumbers = () => {
+    const pages = [];
+    if (totalPages <= 7) {
+      for (let i = 1; i <= totalPages; i++) {
+        pages.push(i);
+      }
+    } else {
+      if (page <= 4) {
+        pages.push(1, 2, 3, 4, 5, '...', totalPages);
+      } else if (page > totalPages - 4) {
+        pages.push(1, '...', totalPages - 4, totalPages - 3, totalPages - 2, totalPages - 1, totalPages);
+      } else {
+        pages.push(1, '...', page - 1, page, page + 1, '...', totalPages);
+      }
+    }
+    return pages;
   };
 
   return (
@@ -112,24 +130,44 @@ export function SalesHistory() {
           </table>
           
           {totalPages > 1 && (
-            <div className="flex items-center justify-between px-6 py-4 border-t border-gray-200 bg-gray-50/50">
-              <button 
-                disabled={page === 1} 
-                onClick={() => setPage(prev => prev - 1)}
-                className="px-4 py-2 border border-gray-300 rounded-md text-sm font-medium text-gray-700 bg-white hover:bg-gray-50 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
-              >
-                Previous
-              </button>
-              <span className="text-sm text-gray-700">
-                Page <span className="font-medium">{page}</span> of <span className="font-medium">{totalPages}</span>
-              </span>
-              <button 
-                disabled={page >= totalPages} 
-                onClick={() => setPage(prev => prev + 1)}
-                className="px-4 py-2 border border-gray-300 rounded-md text-sm font-medium text-gray-700 bg-white hover:bg-gray-50 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
-              >
-                Next
-              </button>
+            <div className="flex justify-center px-6 py-6 border-t border-gray-100 bg-white">
+              <div className="flex items-center gap-2">
+                <button 
+                  disabled={page === 1} 
+                  onClick={() => setPage(prev => prev - 1)}
+                  className="w-9 h-9 flex items-center justify-center border border-gray-200 rounded-md text-gray-500 bg-white hover:bg-gray-50 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
+                >
+                  <ChevronLeft className="w-4 h-4" />
+                </button>
+                
+                {getPageNumbers().map((p, idx) => (
+                  p === '...' ? (
+                    <span key={idx} className="w-9 h-9 flex items-center justify-center text-gray-400">
+                      ...
+                    </span>
+                  ) : (
+                    <button
+                      key={idx}
+                      onClick={() => setPage(p as number)}
+                      className={`w-9 h-9 flex items-center justify-center border rounded-md text-sm font-medium transition-colors ${
+                        page === p 
+                          ? 'border-blue-500 text-blue-600 bg-blue-50/50' 
+                          : 'border-gray-200 text-gray-600 bg-white hover:bg-gray-50'
+                      }`}
+                    >
+                      {p}
+                    </button>
+                  )
+                ))}
+
+                <button 
+                  disabled={page >= totalPages} 
+                  onClick={() => setPage(prev => prev + 1)}
+                  className="w-9 h-9 flex items-center justify-center border border-gray-200 rounded-md text-gray-500 bg-white hover:bg-gray-50 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
+                >
+                  <ChevronRight className="w-4 h-4" />
+                </button>
+              </div>
             </div>
           )}
         </div>
