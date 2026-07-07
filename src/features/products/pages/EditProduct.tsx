@@ -92,7 +92,7 @@ export default function EditProduct() {
   if (!product) return null;
 
   return (
-    <div className="max-w-7xl mx-auto p-4 sm:p-6 lg:p-8 animate-in fade-in duration-500 bg-gray-50/50 min-h-screen">
+    <div className="max-w-full mx-auto p-4 sm:p-6 lg:p-0 animate-in fade-in duration-500 bg-gray-50/50 min-h-screen">
       <div className="mb-6 flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
         <div>
           <h1 className="text-2xl font-bold text-gray-900">Edit Product</h1>
@@ -101,7 +101,7 @@ export default function EditProduct() {
         <button 
           type="button"
           onClick={() => navigate('/products')}
-          className="flex items-center text-sm font-medium text-gray-600 hover:text-indigo-600 bg-white px-4 py-2 border border-gray-200 rounded-lg shadow-sm transition-colors"
+          className="flex items-center text-sm font-medium text-gray-600 hover:text-indigo-600 bg-white px-4 py-2 border border-gray-200 rounded-md transition-colors"
         >
           <ArrowLeft className="w-4 h-4 mr-2" />
           Back to Products

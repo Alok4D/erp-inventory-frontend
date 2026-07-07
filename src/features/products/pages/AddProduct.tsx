@@ -95,7 +95,7 @@ export default function AddProduct() {
         <button 
           type="button"
           onClick={() => navigate('/products')}
-          className="flex items-center text-sm font-medium text-gray-600 hover:text-indigo-600 bg-white px-4 py-2 border border-gray-200 rounded-lg shadow-sm transition-colors"
+          className="flex items-center text-sm font-medium text-gray-600 hover:text-indigo-600 bg-white px-4 py-2 border border-gray-200 rounded-md transition-colors"
         >
           <ArrowLeft className="w-4 h-4 mr-2" />
           Back to Products
