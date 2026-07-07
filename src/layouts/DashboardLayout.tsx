@@ -4,7 +4,7 @@ import { Sidebar } from "../components/layout/Sidebar";
 import { Navbar } from "../components/layout/Navbar";
 
 export default function DashboardLayout() {
-  // Initialize collapsed state based on screen size (laptop/tablet = < 1280px)
+ 
   const [isSidebarCollapsed, setIsSidebarCollapsed] = useState(() => {
     if (typeof window !== "undefined") {
       return window.innerWidth < 1280;
