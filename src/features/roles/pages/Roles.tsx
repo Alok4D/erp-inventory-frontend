@@ -96,7 +96,7 @@ export default function Roles() {
                     <td className="px-6 py-4">
                       <div className="flex flex-wrap gap-2">
                         {role.permissions.map((perm: string) => (
-                          <span key={perm} className="inline-flex items-center px-2.5 py-1 rounded-none text-sm font-medium bg-gray-100 text-gray-800 border border-gray-200 shadow-sm">
+                          <span key={perm} className="inline-flex items-center px-2.5 py-1 rounded-none text-sm font-medium bg-gray-100 text-gray-800 border border-gray-200">
                             {perm.replace(/_/g, ' ')}
                           </span>
                         ))}
