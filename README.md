@@ -1,32 +1,64 @@
-# React + TypeScript + Vite
+# Mini ERP - Frontend Interface
 
-This template provides a minimal setup to get React working in Vite with HMR and some Oxlint rules.
+This is the frontend client for the **Mini ERP – Inventory & Sales Management System**. It provides a beautiful, responsive, and intuitive user interface built with modern web technologies.
 
-Currently, two official plugins are available:
+## Tech Stack
+- **React 19 & Vite**: Fast and modern UI development.
+- **TypeScript**: Typed language for better developer experience and code safety.
+- **Tailwind CSS 4**: Utility-first CSS framework for rapid and responsive styling.
+- **Redux Toolkit & RTK Query**: State management and efficient data fetching/caching.
+- **Lucide React**: Beautiful and consistent iconography.
+- **React Router DOM**: Client-side routing.
+- **Redux Persist**: Persisting auth state across browser reloads.
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Oxc](https://oxc.rs)
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/)
+## Key Features
+- **Secure Authentication**: JWT-based login with persistent sessions.
+- **Interactive Dashboard**: View key metrics (Total Products, Total Sales) and Low Stock warnings at a glance.
+- **Product Management (CRUD)**:
+  - Add new products with image uploads.
+  - View products in a responsive data table.
+  - Edit existing products dynamically.
+  - Delete products with safety confirmations.
+  - Smart Search with Debounce.
+  - Server-side Pagination.
+- **Sales Creation**:
+  - Add multiple products to a shopping cart.
+  - Real-time stock validation (prevents selling more than what's available).
+  - Automatic calculation of subtotal and grand totals.
 
-## React Compiler
+## Prerequisites
+- Node.js (v18 or higher)
+- Backend API running locally or deployed.
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+## Setup & Installation
 
-## Expanding the Oxlint configuration
+1. **Clone the repository and navigate to the frontend folder**:
+   ```bash
+   git clone <repository-url>
+   cd erp-inventory-frontend
+   ```
 
-If you are developing a production application, we recommend enabling type-aware lint rules by installing `oxlint-tsgolint` and editing `.oxlintrc.json`:
+2. **Install dependencies**:
+   ```bash
+   npm install
+   ```
 
-```json
-{
-  "$schema": "./node_modules/oxlint/configuration_schema.json",
-  "plugins": ["react", "typescript", "oxc"],
-  "options": {
-    "typeAware": true
-  },
-  "rules": {
-    "react/rules-of-hooks": "error",
-    "react/only-export-components": ["warn", { "allowConstantExport": true }]
-  }
-}
-```
+3. **Environment Configuration**:
+   The frontend communicates with the backend via API endpoints. By default, it uses `http://localhost:5000/api/v1`. If your backend is hosted elsewhere, update the `baseUrl` in `src/redux/api/baseApi.ts`.
 
-See the [Oxlint rules documentation](https://oxc.rs/docs/guide/usage/linter/rules) for the full list of rules and categories.
+4. **Run the application**:
+   - For development:
+     ```bash
+     npm run dev
+     ```
+     The app will be available at `http://localhost:5173`.
+   - For production build:
+     ```bash
+     npm run build
+     npm run preview
+     ```
+
+## Admin Login Credentials
+To log into the system and explore its features, you can use the following default admin credentials:
+- **Email**: `admin@erp.com`
+- **Password**: `password123`
