@@ -16,6 +16,7 @@ export default function DashboardLayout() {
     return false;
   });
   const [isMobileOpen, setIsMobileOpen] = useState(false);
+  const [notifications, setNotifications] = useState<{id: number, message: string, time: string, read: boolean}[]>([]);
   const location = useLocation();
   const dispatch = useAppDispatch();
 
@@ -28,7 +29,14 @@ export default function DashboardLayout() {
     });
 
     socket.on("new_sale", (data) => {
-      toast.success(data.message || "New sale created!");
+      const msg = data.message || "New sale created!";
+      toast.success(msg);
+      
+      // Add to notifications dropdown
+      setNotifications(prev => [
+        { id: Date.now(), message: msg, time: new Date().toISOString(), read: false },
+        ...prev
+      ]);
       
       // Automatically refresh Dashboard, Sales, and Products by invalidating RTK Query tags
       dispatch(baseApi.util.invalidateTags(["Sales", "Dashboard", "Products"]));
@@ -70,6 +78,8 @@ export default function DashboardLayout() {
           isCollapsed={isSidebarCollapsed} 
           toggleSidebar={() => setIsSidebarCollapsed(!isSidebarCollapsed)} 
           toggleMobileSidebar={() => setIsMobileOpen(true)}
+          notifications={notifications}
+          setNotifications={setNotifications}
         />
         <main className="flex-1 p-6 overflow-auto">
           <Outlet />
