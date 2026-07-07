@@ -16,7 +16,7 @@ const Products = () => {
   const [searchTerm, setSearchTerm] = useState("");
   const [debouncedSearch, setDebouncedSearch] = useState("");
   const [page, setPage] = useState(1);
-  const limit = 12;
+  const limit = 10;
 
   // Debounce search
   useEffect(() => {
