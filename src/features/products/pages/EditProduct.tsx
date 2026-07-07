@@ -231,14 +231,6 @@ export default function EditProduct() {
                 'Update Product'
               )}
             </button>
-            <button 
-              type="button" 
-              onClick={() => navigate('/products')}
-              disabled={isLoading}
-              className="w-full py-2.5 px-4 bg-white border border-gray-200 text-gray-700 font-medium rounded-lg hover:bg-gray-50 transition-colors text-sm"
-            >
-              Cancel
-            </button>
           </div>
         </div>
       </form>
