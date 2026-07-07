@@ -9,7 +9,7 @@ import { ProductTable } from "../components/ProductTable";
 const Products = () => {
   const navigate = useNavigate();
   const [productToDelete, setProductToDelete] = useState<string | null>(null);
-  
+
   const user = useAppSelector((state) => state.auth.user);
   const canManageProducts = user?.role === 'admin' || user?.role === 'manager';
 
@@ -22,7 +22,7 @@ const Products = () => {
   useEffect(() => {
     const timer = setTimeout(() => {
       setDebouncedSearch(searchTerm);
-      setPage(1); // Reset to page 1 on new search
+      setPage(1);
     }, 500);
     return () => clearTimeout(timer);
   }, [searchTerm]);
@@ -31,7 +31,7 @@ const Products = () => {
   if (debouncedSearch) queryArgs.searchTerm = debouncedSearch;
 
   const { data, isLoading, error } = useGetProductsQuery(queryArgs);
-  
+
   const [deleteProduct, { isLoading: isDeleting }] = useDeleteProductMutation();
 
   const products = data?.data || [];
@@ -39,7 +39,7 @@ const Products = () => {
 
   const handleDeleteConfirm = async () => {
     if (!productToDelete) return;
-    
+
     try {
       await deleteProduct(productToDelete).unwrap();
       // Pagination logic: if we delete the last item on current page, go back a page
@@ -72,9 +72,9 @@ const Products = () => {
         <div className="flex justify-between mb-4">
           <div className="relative">
             <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 w-5 h-5" />
-            <input 
-              type="text" 
-              placeholder="Search products..." 
+            <input
+              type="text"
+              placeholder="Search products..."
               value={searchTerm}
               onChange={(e) => setSearchTerm(e.target.value)}
               className="pl-10 pr-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-gray-900 focus:border-gray-900 w-64"
@@ -82,7 +82,7 @@ const Products = () => {
           </div>
         </div>
 
-        <ProductTable 
+        <ProductTable
           products={products}
           isLoading={isLoading}
           error={error}
@@ -96,7 +96,7 @@ const Products = () => {
       </div>
 
       {productToDelete && (
-        <DeleteProductModal 
+        <DeleteProductModal
           isLoading={isDeleting}
           onClose={() => setProductToDelete(null)}
           onConfirm={handleDeleteConfirm}

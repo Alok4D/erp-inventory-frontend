@@ -8,7 +8,7 @@ import { DeleteSaleModal } from "./DeleteSaleModal";
 export function SalesHistory() {
   
   const [page, setPage] = useState(1);
-  const { data: salesData, isLoading: isLoadingSales } = useGetSalesQuery({ page, limit: 12 });
+  const { data: salesData, isLoading: isLoadingSales } = useGetSalesQuery({ page, limit: 10 });
   const [deleteSale, { isLoading: isDeletingSale }] = useDeleteSaleMutation();
   const sales = salesData?.data || [];
   const meta = salesData?.meta;
