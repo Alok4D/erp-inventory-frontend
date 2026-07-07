@@ -91,14 +91,14 @@ export default function Roles() {
 
   return (
     <div className="space-y-6">
-      <div className="flex justify-between items-center">
+      <div className="flex flex-col sm:flex-row sm:justify-between sm:items-center gap-4">
         <div>
           <h1 className="text-2xl font-bold text-gray-900">Roles & Permissions</h1>
           <p className="text-sm text-gray-500 mt-1">Manage system roles and access control</p>
         </div>
         <button
           onClick={handleAddNew}
-          className="flex items-center px-4 py-2 bg-indigo-600 text-white rounded-none hover:bg-indigo-700 transition-colors"
+          className="flex items-center px-4 py-2 bg-indigo-600 text-white rounded-none hover:bg-indigo-700 transition-colors whitespace-nowrap self-start sm:self-auto"
         >
           <Plus className="w-5 h-5 mr-2" />
           Add Role
