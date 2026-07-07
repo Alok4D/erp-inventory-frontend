@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { Plus, Search, Package2, Loader2, ChevronLeft, ChevronRight } from "lucide-react";
+import { Plus, Search, Package2, ChevronLeft, ChevronRight } from "lucide-react";
 import { useGetProductsQuery, useDeleteProductMutation } from "../../../redux/features/product/productApi";
 import { Skeleton } from "../../../components/ui/skeleton";
 import { AddProductModal } from "../components/AddProductModal";
@@ -7,7 +7,8 @@ import { EditProductModal } from "../components/EditProductModal";
 import { DeleteProductModal } from "../components/DeleteProductModal";
 import { useAppSelector } from "../../../redux/hooks";
 
-export default function Products() {
+ const Products = () => {
+
   const [isAddModalOpen, setIsAddModalOpen] = useState(false);
   const [editingProduct, setEditingProduct] = useState<any>(null);
   const [productToDelete, setProductToDelete] = useState<string | null>(null);
@@ -230,3 +231,5 @@ export default function Products() {
     </div>
   );
 }
+
+export default Products;
