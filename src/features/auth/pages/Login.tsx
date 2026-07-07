@@ -2,8 +2,8 @@ import { useForm } from 'react-hook-form';
 import { useNavigate, Link } from 'react-router-dom';
 import { useLoginMutation } from '../../../redux/features/auth/authApi';
 import { setUser, type TUser,  } from '../../../redux/features/auth/authSlice';
-import { useAppDispatch } from '../../../redux/hooks';
-import { useState } from 'react';
+import { useAppDispatch, useAppSelector } from '../../../redux/hooks';
+import { useState, useEffect } from 'react';
 
 export default function Login() {
   
@@ -12,6 +12,14 @@ export default function Login() {
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
   const [errorMsg, setErrorMsg] = useState('');
+  
+  const token = useAppSelector((state) => state.auth.token);
+
+  useEffect(() => {
+    if (token) {
+      navigate("/");
+    }
+  }, [token, navigate]);
 
   const onSubmit = async (data: any) => {
     try {

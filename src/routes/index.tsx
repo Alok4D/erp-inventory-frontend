@@ -5,6 +5,7 @@ import Products from "../features/products/pages/Products";
 import Sales from "../features/sales/pages/Sales";
 import Login from "../features/auth/pages/Login";
 import Signup from "../features/auth/pages/Signup";
+import ProtectedRoute from "../components/layout/ProtectedRoute";
 
 export const router = createBrowserRouter([
   {
@@ -16,20 +17,25 @@ export const router = createBrowserRouter([
     element: <Signup />,
   },
   {
-    path: "/",
-    element: <DashboardLayout />,
+    element: <ProtectedRoute />,
     children: [
       {
         path: "/",
-        element: <Dashboard />,
-      },
-      {
-        path: "/products",
-        element: <Products />,
-      },
-      {
-        path: "/sales",
-        element: <Sales />,
+        element: <DashboardLayout />,
+        children: [
+          {
+            path: "/",
+            element: <Dashboard />,
+          },
+          {
+            path: "/products",
+            element: <Products />,
+          },
+          {
+            path: "/sales",
+            element: <Sales />,
+          },
+        ],
       },
     ],
   },
