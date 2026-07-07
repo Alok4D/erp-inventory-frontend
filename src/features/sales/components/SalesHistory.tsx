@@ -6,6 +6,7 @@ import { useState } from "react";
 import { DeleteSaleModal } from "./DeleteSaleModal";
 
 export function SalesHistory() {
+  
   const [page, setPage] = useState(1);
   const { data: salesData, isLoading: isLoadingSales } = useGetSalesQuery({ page, limit: 10 });
   const [deleteSale, { isLoading: isDeletingSale }] = useDeleteSaleMutation();
