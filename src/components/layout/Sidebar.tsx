@@ -65,7 +65,7 @@ export function Sidebar({ isCollapsed, isMobileOpen, setIsMobileOpen }: SidebarP
         <div className="flex items-center justify-between h-16 border-b border-gray-800 px-4 overflow-hidden shrink-0">
           <div className="flex items-center justify-center gap-2 mx-auto md:mx-0">
             <Hexagon className="w-8 h-8 text-indigo-500 shrink-0" />
-            {(!isCollapsed || isMobileOpen) && <h1 className="text-xl font-bold tracking-wider whitespace-nowrap">Mini ERP</h1>}
+            {(!isCollapsed || isMobileOpen) && <h1 className="text-xl font-bold tracking-wider whitespace-nowrap">Smart ERP</h1>}
           </div>
           
           {/* Mobile close button */}

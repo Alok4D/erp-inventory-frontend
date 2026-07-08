@@ -54,7 +54,7 @@ export function Navbar({ toggleSidebar, toggleMobileSidebar, notifications, setN
           <div className="flex items-center gap-2">
           
             <h2 className="text-xl font-semibold text-gray-900 tracking-tight">
-              Welcome to Mini ERP
+              Welcome to Smart ERP
             </h2>
           </div>
         </div>

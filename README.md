@@ -1,6 +1,6 @@
 # Smart ERP Dashboard
 
-**Welcome to Inventory & Sales Management System** — a modern and user-friendly Mini ERP designed to simplify product inventory, sales tracking, and business management. Easily manage products, Sales History, monitor stock, and view real-time business insights through an intuitive dashboard.
+**Welcome to Inventory & Sales Management System** — a modern and user-friendly Smart ERP designed to simplify product inventory, sales tracking, and business management. Easily manage products, Sales History, monitor stock, and view real-time business insights through an intuitive dashboard.
 
 
 ## 🔗 Live Links

@@ -62,7 +62,7 @@ export default function Login() {
           />
         </div>
         <div className="relative z-10 flex flex-col justify-center px-12 text-white">
-          <h1 className="text-5xl font-extrabold tracking-tight mb-6">Mini ERP System</h1>
+          <h1 className="text-5xl font-extrabold tracking-tight mb-6">Smart ERP System</h1>
           <p className="text-xl text-indigo-100 max-w-lg leading-relaxed">
             Manage your products, track sales, and control permissions all in one intuitive platform.
           </p>
