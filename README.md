@@ -42,6 +42,11 @@
 - **Dynamic Roles**: Create new roles (e.g., "Cashier", "Supervisor") directly from the UI.
 - **Granular Permissions**: Assign specific permissions (e.g., `view_products`, `create_sale`, `manage_roles`) to any role.
 
+### 6. Real-Time Updates (WebSockets)
+- **Instant Synchronization**: Uses Socket.io to instantly notify clients of changes (e.g., when a new sale is completed).
+- **Auto-Refresh**: Automatically refreshes dashboard metrics, sales history, and product stock without needing a manual page reload.
+- **Live Notifications**: Displays an interactive toast popup and updates the navbar notification bell whenever real-time events occur.
+
 ## 🛠️ Tech Stack
 - **React 18** (UI Framework)
 - **TypeScript** (Type Safety)
@@ -50,6 +55,7 @@
 - **Tailwind CSS** (Styling)
 - **Lucide React** (Icons)
 - **SweetAlert2** (Toast & Alert Modals)
+- **Socket.io-client** (Real-time WebSocket Events)
 - **Vite** (Build Tool)
 
 ---
