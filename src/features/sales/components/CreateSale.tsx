@@ -8,6 +8,7 @@ import Swal from "sweetalert2";
 export function CreateSale() {
   const [searchTerm, setSearchTerm] = useState("");
   const [debouncedSearch, setDebouncedSearch] = useState("");
+  const [isSearchDropdownOpen, setIsSearchDropdownOpen] = useState(false);
 
   useEffect(() => {
     const timer = setTimeout(() => {
@@ -145,8 +146,46 @@ export function CreateSale() {
                     placeholder="Search by name or SKU..."
                     className="w-full pl-9 pr-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-1 focus:ring-gray-900 focus:border-gray-900 transition-colors"
                     value={searchTerm}
-                    onChange={(e) => setSearchTerm(e.target.value)}
+                    onChange={(e) => {
+                      setSearchTerm(e.target.value);
+                      setIsSearchDropdownOpen(true);
+                    }}
+                    onFocus={() => setIsSearchDropdownOpen(true)}
+                    onBlur={() => setTimeout(() => setIsSearchDropdownOpen(false), 200)}
                   />
+                  
+                  {isSearchDropdownOpen && searchTerm && products.length > 0 && (
+                    <ul className="absolute z-10 w-full mt-1 bg-white border border-gray-300 rounded-md shadow-lg max-h-60 overflow-auto">
+                      {products.map((product: any) => (
+                        <li 
+                          key={product._id} 
+                          className={`px-4 py-3 cursor-pointer hover:bg-gray-50 border-b border-gray-50 last:border-b-0 ${product.stockQuantity === 0 ? 'opacity-50 cursor-not-allowed' : ''}`}
+                          onMouseDown={(e) => e.preventDefault()} // Prevent blur before click
+                          onClick={() => {
+                            if (product.stockQuantity > 0) {
+                              setSelectedProductId(product._id);
+                              setSearchTerm(product.name);
+                              setIsSearchDropdownOpen(false);
+                            }
+                          }}
+                        >
+                          <div className="font-medium text-gray-900">{product.name}</div>
+                          <div className="flex justify-between items-center mt-1">
+                            <span className="text-xs text-gray-500">SKU: {product.sku}</span>
+                            <span className="text-xs font-semibold text-gray-900">${product.sellingPrice?.toFixed(2)}</span>
+                          </div>
+                          <div className={`text-xs mt-1 font-medium ${product.stockQuantity > 0 ? 'text-green-600' : 'text-red-500'}`}>
+                            {product.stockQuantity > 0 ? `In Stock: ${product.stockQuantity}` : 'Out of Stock'}
+                          </div>
+                        </li>
+                      ))}
+                    </ul>
+                  )}
+                  {isSearchDropdownOpen && searchTerm && products.length === 0 && !isLoadingProducts && (
+                    <div className="absolute z-10 w-full mt-1 bg-white border border-gray-300 rounded-md shadow-lg p-4 text-center text-gray-500 text-sm">
+                      No matching products found.
+                    </div>
+                  )}
                 </div>
               </div>
               <div className="md:col-span-4 w-full">
