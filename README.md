@@ -10,11 +10,11 @@
   <img src="public/dashboard-demo-images/image.png" alt="Smart ERP Dashboard Preview" width="100%" />
 </div>
 
-## 🔑 Admin Login Credentials
-| Field | Value |
-|-------|-------|
-| Email | `admin@gmail.com` |
-| Password | `123456` |
+## 🔑 Demo Login Credentials
+
+| 👑 Admin Account | 💼 Manager Account | 👨‍💼 Employee Account |
+| :--- | :--- | :--- |
+| **Email:** `admin@gmail.com`<br>**Pass:** `123456` | **Email:** `manager@gmail.com`<br>**Pass:** `123456` | **Email:** `employee@gmail.com`<br>**Pass:** `123456` |
 
 ## ✨ Features Implemented
 
