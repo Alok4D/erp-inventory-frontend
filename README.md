@@ -1,6 +1,7 @@
 # Mini ERP — Frontend
 
-This is the frontend for the **Mini ERP – Inventory & Sales Management System**, built with React, TypeScript, and Redux Toolkit.
+**Welcome to Inventory & Sales Management System** — a modern and user-friendly Mini ERP designed to simplify product inventory, sales tracking, and business management. Easily manage products, Sales History, monitor stock, and view real-time business insights through an intuitive dashboard.
+
 
 ## 🔗 Live Links
 - **Live Frontend**: https://smart-erp-dashboard.vercel.app
