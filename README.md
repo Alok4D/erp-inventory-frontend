@@ -53,11 +53,16 @@
 - **React 18** (UI Framework)
 - **TypeScript** (Type Safety)
 - **Redux Toolkit & RTK Query** (State Management & API Data Fetching)
+- **Redux Persist** (State Persistence)
 - **React Router v6** (Client-side Routing)
+- **React Hook Form** (Form Handling)
+- **Zod** (Schema Validation)
+- **shadcn/ui** (UI Components)
 - **Tailwind CSS** (Styling)
 - **Lucide React** (Icons)
 - **SweetAlert2** (Toast & Alert Modals)
 - **Socket.io-client** (Real-time WebSocket Events)
+- **JWT Decode** (Token Management)
 - **Vite** (Build Tool)
 
 ---
