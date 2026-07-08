@@ -100,23 +100,3 @@ npm run build
 ```
 
 ---
-
-## 📁 Project Structure
-```
-src/
-├── app/                    # Redux store setup
-├── components/             # Shared components
-│   ├── layout/             # Navbar, Sidebar, DashboardLayout
-│   └── ui/                 # Reusable UI elements (Skeleton, etc.)
-├── features/               # Feature-based modules
-│   ├── auth/               # Authentication pages
-│   ├── dashboard/          # Dashboard components
-│   ├── products/           # Product list, creation, editing
-│   ├── sales/              # Point of sale, sales history
-│   └── roles/              # Role management
-├── layouts/                # Page layout wrappers
-├── redux/                  # State management
-│   └── features/           # RTK Query API slices
-├── routes/                 # React Router configuration
-└── App.tsx                 # Root component
-```
