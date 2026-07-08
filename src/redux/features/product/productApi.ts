@@ -3,7 +3,7 @@ import { baseApi } from '../../api/baseApi';
 export const productApi = baseApi.injectEndpoints({
   endpoints: (builder) => ({
     getProducts: builder.query({
-      query: (arg?: { searchTerm?: string; page?: number; limit?: number }) => {
+      query: (arg?: { searchTerm?: string; page?: number; limit?: number; category?: string }) => {
         return {
           url: '/products',
           method: 'GET',

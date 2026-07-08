@@ -7,6 +7,7 @@ import { useAppSelector } from "../../../redux/hooks";
 import { ProductTable } from "../components/ProductTable";
 
 const Products = () => {
+  
   const navigate = useNavigate();
   const [productToDelete, setProductToDelete] = useState<string | null>(null);
 
@@ -15,8 +16,15 @@ const Products = () => {
 
   const [searchTerm, setSearchTerm] = useState("");
   const [debouncedSearch, setDebouncedSearch] = useState("");
+  const [categoryFilter, setCategoryFilter] = useState("");
   const [page, setPage] = useState(1);
   const limit = 10;
+
+  const { data: allProductsData } = useGetProductsQuery({ limit: 1000 });
+  const allProducts = allProductsData?.data || [];
+  const defaultCategories = ['electronics', 'clothing', 'furniture'];
+  const dynamicCategories = Array.from(new Set(allProducts.map((p: any) => p.category?.toLowerCase()))).filter(Boolean) as string[];
+  const allCategories = Array.from(new Set([...defaultCategories, ...dynamicCategories]));
 
   // Debounce search
   useEffect(() => {
@@ -29,6 +37,7 @@ const Products = () => {
 
   const queryArgs: any = { page, limit };
   if (debouncedSearch) queryArgs.searchTerm = debouncedSearch;
+  if (categoryFilter) queryArgs.category = categoryFilter;
 
   const { data, isLoading, error } = useGetProductsQuery(queryArgs);
 
@@ -70,15 +79,30 @@ const Products = () => {
 
       <div className="bg-white rounded-lg shadow-sm border border-gray-100 p-6">
         <div className="flex justify-between mb-4">
-          <div className="relative">
-            <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 w-5 h-5" />
-            <input
-              type="text"
-              placeholder="Search products..."
-              value={searchTerm}
-              onChange={(e) => setSearchTerm(e.target.value)}
-              className="pl-10 pr-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-gray-900 focus:border-gray-900 w-64"
-            />
+          <div className="flex gap-4">
+            <div className="relative">
+              <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 w-5 h-5" />
+              <input
+                type="text"
+                placeholder="Search products..."
+                value={searchTerm}
+                onChange={(e) => setSearchTerm(e.target.value)}
+                className="pl-10 pr-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-gray-900 focus:border-gray-900 w-64"
+              />
+            </div>
+            <select
+              value={categoryFilter}
+              onChange={(e) => {
+                setCategoryFilter(e.target.value);
+                setPage(1);
+              }}
+              className="px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-gray-900 focus:border-gray-900 bg-white min-w-[160px] text-gray-700 capitalize"
+            >
+              <option value="" className="text-gray-500">All Categories</option>
+              {allCategories.map(cat => (
+                <option key={cat} value={cat} className="capitalize">{cat}</option>
+              ))}
+            </select>
           </div>
         </div>
 
