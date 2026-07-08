@@ -5,6 +5,7 @@ import { Navbar } from "../components/layout/Navbar";
 import { io } from "socket.io-client";
 import { useAppDispatch } from "../redux/hooks";
 import { baseApi } from "../redux/api/baseApi";
+import Swal from "sweetalert2";
 
 export default function DashboardLayout() {
  
@@ -35,6 +36,17 @@ export default function DashboardLayout() {
         { id: Date.now(), message: msg, time: new Date().toISOString(), read: false },
         ...prev
       ]);
+      
+      // Show real-time popup toast
+      Swal.fire({
+        toast: true,
+        position: 'bottom-end',
+        icon: 'info',
+        title: msg,
+        showConfirmButton: false,
+        timer: 4000,
+        timerProgressBar: true,
+      });
       
       // Automatically refresh Dashboard, Sales, and Products by invalidating RTK Query tags
       dispatch(baseApi.util.invalidateTags(["Sales", "Dashboard", "Products"]));
