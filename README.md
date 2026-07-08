@@ -5,8 +5,6 @@
 
 ## 🔗 Live Links
 - **Live Frontend**: https://smart-erp-dashboard.vercel.app
-- **Frontend GitHub**: https://github.com/Alok4D/erp-inventory-frontend
-- **Backend GitHub**: https://github.com/Alok4D/erp-inventory-backend
 
 <div align="center">
   <img src="public/dashboard-demo-images/image.png" alt="Smart ERP Dashboard Preview" width="100%" />
