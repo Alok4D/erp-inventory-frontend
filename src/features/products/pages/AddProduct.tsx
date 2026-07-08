@@ -1,12 +1,19 @@
 import { useState } from "react";
 import { ArrowLeft, Loader2, X } from "lucide-react";
 import { useNavigate } from "react-router-dom";
-import { useAddProductMutation } from "../../../redux/features/product/productApi";
+import { useAddProductMutation, useGetProductsQuery } from "../../../redux/features/product/productApi";
 import Swal from "sweetalert2";
 
 export default function AddProduct() {
   const navigate = useNavigate();
   const [addProduct, { isLoading }] = useAddProductMutation();
+  const { data: productsData } = useGetProductsQuery({ limit: 1000 });
+  
+  const products = productsData?.data || [];
+  const defaultCategories = ['electronics', 'clothing', 'furniture'];
+  const dynamicCategories = Array.from(new Set(products.map((p: any) => p.category?.toLowerCase()))).filter(Boolean) as string[];
+  const allCategories = Array.from(new Set([...defaultCategories, ...dynamicCategories]));
+  
   const [formData, setFormData] = useState({
     name: '',
     sku: '',
@@ -125,9 +132,9 @@ export default function AddProduct() {
                     className="w-full px-4 py-2.5 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent transition-all text-sm text-gray-700 cursor-pointer"
                   >
                     <option value="" className="text-gray-500">Select category</option>
-                    <option value="electronics">Electronics</option>
-                    <option value="clothing">Clothing</option>
-                    <option value="furniture">Furniture</option>
+                    {allCategories.map(cat => (
+                      <option key={cat} value={cat} className="capitalize">{cat}</option>
+                    ))}
                     <option value="add_new_category" className="font-bold text-indigo-600 bg-indigo-50/50">+ Add New Category</option>
                   </select>
                   {isAddingNewCategory && (
