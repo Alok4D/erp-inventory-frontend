@@ -22,7 +22,7 @@ export default function DashboardLayout() {
 
   // Socket.io integration for real-time sale notifications
   useEffect(() => {
-    const socket = io(import.meta.env.VITE_SOCKET_URL || "http://localhost:5000"); // Ensure this matches your backend URL
+    const socket = io(import.meta.env.VITE_SOCKET_URL || "http://localhost:5000");
 
     socket.on("connect", () => {
       console.log("Connected to socket server");
